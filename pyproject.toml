@@ -1,0 +1,24 @@
+[project]
+name = "devops-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp>=2.11.1",
+    "langchain>=0.3.27",
+    "langchain-anthropic>=0.3.18",
+    "langchain-cerebras>=0.5.0",
+    "langchain-google-genai>=2.1.9",
+    "langchain-mcp-adapters>=0.1.9",
+    "langchain-mistralai>=0.2.11",
+    "langchain-openai>=0.3.28",
+    "langgraph>=0.6.3",
+    "langgraph-checkpoint-sqlite>=2.0.11",
+    "langgraph-cli>=0.3.6",
+    "loguru>=0.7.3",
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "pytest>=8.4.1",
+    "python-dotenv>=1.1.1",
+]
