@@ -1,7 +1,7 @@
 import requests
 import json
 from datetime import datetime, timedelta
-from typing import Optional, Dict, Any,Type, Tuple
+from typing import Optional, Dict, Any, Type, Tuple
 from pydantic import BaseModel, Field
 from langchain_core.callbacks import (
     AsyncCallbackManagerForToolRun,
@@ -31,7 +31,84 @@ class PrometheusQuerySchema(ToolInputSchema):
 
 
 class PrometheusTool(AbstractTool):
-    """LangChain tool for querying Prometheus metrics."""
+    """
+    A comprehensive LangChain tool for querying Prometheus metrics and monitoring data.
+
+    This tool provides a powerful interface to interact with Prometheus instances,
+    allowing users to execute PromQL queries, retrieve time-series data, and monitor
+    system performance and health metrics.
+
+    Features:
+        - Execute instant and range PromQL queries
+        - Support for authentication (basic auth)
+        - Custom HTTP headers support
+        - Flexible time range queries (relative and absolute)
+        - Formatted response output for better readability
+        - Error handling and timeout management
+        - Support for both sync and async operations
+
+    Prerequisites:
+        - Accessible Prometheus server
+        - Valid PromQL query syntax
+        - Network connectivity to Prometheus endpoint
+        - Optional: Authentication credentials if required
+
+    Authentication:
+        The tool supports basic authentication. Provide username and password
+        during initialization if your Prometheus instance requires authentication.
+
+    Query Types:
+        - Instant Queries: Single point-in-time data retrieval
+        - Range Queries: Time-series data over a specified range
+
+    Time Formats:
+        - Absolute: ISO 8601 format (e.g., '2024-01-01T00:00:00Z')
+        - Relative: Duration strings (e.g., '1h', '30m', '2d')
+        - Special: 'now' for current time
+
+    Example Usage:
+        ```python
+        # Basic instant query
+        tool = PrometheusTool(prometheus_url="http://localhost:9090")
+        result = tool.run({"query": "up"})
+
+        # Range query with time parameters
+        result = tool.run({
+            "query": "rate(http_requests_total[5m])",
+            "start_time": "1h",
+            "end_time": "now",
+            "step": "1m"
+        })
+
+        # With authentication
+        tool = PrometheusTool(
+            prometheus_url="http://prometheus.example.com",
+            username="user",
+            password="pass"
+        )
+        ```
+
+    Common Use Cases:
+        - Service availability monitoring (up metric)
+        - Performance metrics (CPU, memory, disk usage)
+        - Application metrics (request rates, error rates)
+        - Infrastructure monitoring (node health, resource utilization)
+        - Alert analysis and threshold monitoring
+
+    Output Format:
+        The tool returns formatted, human-readable results including:
+        - Metric names and labels
+        - Time-series data points
+        - Error messages for failed queries
+        - Empty result notifications
+
+    Error Handling:
+        - Network connectivity issues
+        - Authentication failures
+        - Invalid PromQL syntax
+        - Timeout errors
+        - Server errors (4xx, 5xx responses)
+    """
 
     name: str = "prometheus_query"
     description: str = """
@@ -65,6 +142,43 @@ class PrometheusTool(AbstractTool):
         headers: Optional[Dict[str, str]] = None,
         **kwargs,
     ):
+        """
+        Initialize the Prometheus tool with connection parameters.
+
+        Args:
+            prometheus_url (str): The base URL of the Prometheus server.
+                                Should include protocol (http/https) and port if needed.
+                                Example: "http://localhost:9090" or "https://prometheus.example.com"
+            username (Optional[str]): Username for basic authentication.
+                                    Required if Prometheus requires authentication.
+            password (Optional[str]): Password for basic authentication.
+                                    Required if Prometheus requires authentication.
+            headers (Optional[Dict[str, str]]): Additional HTTP headers to include in requests.
+                                              Useful for custom authentication or API keys.
+            **kwargs: Additional arguments passed to the parent class.
+
+        Raises:
+            ValueError: If prometheus_url is invalid or empty.
+
+        Example:
+            ```python
+            # Basic initialization
+            tool = PrometheusTool("http://localhost:9090")
+
+            # With authentication
+            tool = PrometheusTool(
+                "https://prometheus.example.com",
+                username="admin",
+                password="secret"
+            )
+
+            # With custom headers
+            tool = PrometheusTool(
+                "http://localhost:9090",
+                headers={"X-API-Key": "your-api-key"}
+            )
+            ```
+        """
         # 1. Prepare the values for the fields.
         auth_tuple = (username, password) if username and password else None
         headers_dict = headers or {}
@@ -78,7 +192,31 @@ class PrometheusTool(AbstractTool):
         )
 
     def _parse_time(self, time_str: Optional[str]) -> Optional[str]:
-        """Parse time string to appropriate format for Prometheus."""
+        """
+        Parse time string to appropriate format for Prometheus API.
+
+        This method handles various time formats including absolute timestamps,
+        relative durations, and special values like 'now'.
+
+        Args:
+            time_str (Optional[str]): Time string to parse. Can be:
+                                    - ISO 8601 format: '2024-01-01T00:00:00Z'
+                                    - Relative duration: '1h', '30m', '2d'
+                                    - Special value: 'now'
+                                    - None: returns None
+
+        Returns:
+            Optional[str]: Parsed time string suitable for Prometheus API,
+                          or None if input is None or empty.
+
+        Examples:
+            ```python
+            tool._parse_time("1h")  # Returns "1h"
+            tool._parse_time("now")  # Returns "2024-01-01T12:00:00Z"
+            tool._parse_time("2024-01-01T00:00:00Z")  # Returns as-is
+            tool._parse_time(None)  # Returns None
+            ```
+        """
         if not time_str:
             return None
         if time_str == "now":
@@ -88,7 +226,41 @@ class PrometheusTool(AbstractTool):
         return time_str
 
     def _build_query_params(self, **kwargs) -> Tuple[Dict[str, Any], str]:
-        """Build query parameters for Prometheus API."""
+        """
+        Build query parameters for Prometheus API requests.
+
+        This method constructs the appropriate parameters and determines
+        whether to use the instant query or range query endpoint based on
+        the provided time parameters.
+
+        Args:
+            **kwargs: Query parameters including:
+                     - query (str): The PromQL query string
+                     - start_time (Optional[str]): Start time for range queries
+                     - end_time (Optional[str]): End time for range queries
+                     - step (Optional[str]): Step interval for range queries
+
+        Returns:
+            Tuple[Dict[str, Any], str]: A tuple containing:
+                                       - Dictionary of query parameters
+                                       - Endpoint name ('query' or 'query_range')
+
+        Example:
+            ```python
+            # Instant query
+            params, endpoint = tool._build_query_params(query="up")
+            # Returns: ({"query": "up"}, "query")
+
+            # Range query
+            params, endpoint = tool._build_query_params(
+                query="rate(http_requests_total[5m])",
+                start_time="1h",
+                end_time="now",
+                step="1m"
+            )
+            # Returns: ({"query": "...", "start": "1h", "end": "now", "step": "1m"}, "query_range")
+            ```
+        """
         params = {"query": kwargs["query"]}
         start_time = self._parse_time(kwargs.get("start_time"))
         end_time = self._parse_time(kwargs.get("end_time"))
@@ -112,7 +284,31 @@ class PrometheusTool(AbstractTool):
         return params, endpoint
 
     def _format_response(self, response_data: Dict[str, Any]) -> str:
-        """Format Prometheus response for better readability."""
+        """
+        Format Prometheus response for better readability.
+
+        This method takes the raw JSON response from Prometheus and formats
+        it into a human-readable string with proper structure and formatting.
+
+        Args:
+            response_data (Dict[str, Any]): Raw response data from Prometheus API.
+                                          Expected to contain 'status', 'data', and 'error' fields.
+
+        Returns:
+            str: Formatted, human-readable string representation of the response.
+                 Includes error messages if the query failed, or formatted results
+                 if the query was successful.
+
+        Format Examples:
+            ```
+            # Success response
+            Metric: {instance="localhost:9090", job="prometheus"}
+            Values: [1704067200, 1], [1704067260, 1], [1704067320, 1]
+
+            # Error response
+            Error: parse error at char 5: unexpected character in identifier
+            ```
+        """
         if response_data.get("status") != "success":
             return f"Error: {response_data.get('error', 'Unknown error')}"
 
@@ -279,12 +475,10 @@ if __name__ == "__main__":
         prometheus_url="http://localhost:9090"
     )
 
-    # Example query
-    print("Executing example query...")
-    result = prometheus_tool.invoke({
-    "query": CommonQueries.service_availability("prometheus"),
-    "timeout": 10
-})
+    print(type(prometheus_tool))
+    result = prometheus_tool.invoke(
+        {"query": CommonQueries.service_availability("prometheus"), "timeout": 10}
+    )
     print("\n--- Query Result ---")
     print(result)
     print("--------------------")

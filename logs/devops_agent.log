@@ -83,3 +83,982 @@
 2025-08-06 22:37:54.643 | INFO     | __main__:main:204 | Agent session ended. Total sessions processed: 6
 2025-08-06 22:37:54.643 | INFO     | __main__:main:213 | DevOps Agent shutdown complete
 2025-08-06 22:37:54.643 | INFO     | __main__:main:214 | ==================================================
+2025-08-07 18:12:18.503 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 18:12:18.503 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 18:12:18.503 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 18:12:18.503 | INFO     | __main__:main:28 | Starting DevOps Incident Response Agent
+2025-08-07 18:12:18.503 | INFO     | __main__:main:29 | ==================================================
+2025-08-07 18:12:18.503 | INFO     | __main__:main:35 | Configuration settings loaded successfully
+2025-08-07 18:12:18.506 | INFO     | __main__:main:41 | All required settings are present
+2025-08-07 18:12:18.506 | INFO     | __main__:main:47 | Environment: development
+2025-08-07 18:12:18.506 | INFO     | __main__:main:48 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 18:12:18.506 | INFO     | __main__:main:51 | Debug mode: False
+2025-08-07 18:12:18.506 | INFO     | __main__:main:94 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 18:12:18.506 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 18:12:18.506 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 18:12:18.506 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 18:12:18.506 | INFO     | __main__:main:102 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 18:12:20.587 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 18:12:20.587 | INFO     | __main__:main:111 | Model instance retrieved successfully
+2025-08-07 18:12:20.587 | INFO     | tools.github.factory:__init__:40 | GitHub API client initialized successfully
+2025-08-07 18:12:20.587 | INFO     | tools.github.factory:tools:83 | Successfully created 21 GitHub tools
+2025-08-07 18:12:20.587 | INFO     | __main__:main:124 | Successfully loaded 21 GitHub tools
+2025-08-07 18:12:20.587 | ERROR    | __main__:main:136 | Failed to initialize Prometheus tool: PROMETHEUS_URL environment variable is required.
+2025-08-07 18:12:20.587 | CRITICAL | __main__:main:237 | Critical error in main function: PROMETHEUS_URL environment variable is required.
+2025-08-07 18:12:20.587 | ERROR    | __main__:main:238 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 248, in <module>
+    main()
+    └ <function main at 0x000001C6584DD6C0>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 133, in main
+    prometheus_tool = get_prometheus_tool_from_env()
+                      └ <function get_prometheus_tool_from_env at 0x000001C65CF11BC0>
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\tools\prometheus\factory.py", line 16, in get_prometheus_tool_from_env
+    raise ValueError("PROMETHEUS_URL environment variable is required.")
+
+ValueError: PROMETHEUS_URL environment variable is required.
+2025-08-07 18:12:20.587 | INFO     | __main__:main:243 | DevOps Agent shutdown complete
+2025-08-07 18:12:20.587 | INFO     | __main__:main:244 | ==================================================
+2025-08-07 18:13:34.058 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 18:13:34.058 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 18:13:34.058 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 18:13:34.058 | INFO     | __main__:main:28 | Starting DevOps Incident Response Agent
+2025-08-07 18:13:34.058 | INFO     | __main__:main:29 | ==================================================
+2025-08-07 18:13:34.058 | INFO     | __main__:main:35 | Configuration settings loaded successfully
+2025-08-07 18:13:34.058 | INFO     | __main__:main:41 | All required settings are present
+2025-08-07 18:13:34.058 | INFO     | __main__:main:47 | Environment: development
+2025-08-07 18:13:34.058 | INFO     | __main__:main:48 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 18:13:34.058 | INFO     | __main__:main:51 | Debug mode: False
+2025-08-07 18:13:34.058 | INFO     | __main__:main:94 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 18:13:34.058 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 18:13:34.058 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 18:13:34.058 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 18:13:34.058 | INFO     | __main__:main:102 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 18:13:34.553 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 18:13:34.553 | INFO     | __main__:main:111 | Model instance retrieved successfully
+2025-08-07 18:13:34.553 | INFO     | tools.github.factory:__init__:40 | GitHub API client initialized successfully
+2025-08-07 18:13:34.553 | INFO     | tools.github.factory:tools:83 | Successfully created 21 GitHub tools
+2025-08-07 18:13:34.553 | INFO     | __main__:main:124 | Successfully loaded 21 GitHub tools
+2025-08-07 18:13:34.553 | INFO     | __main__:main:134 | Prometheus tool initialized successfully
+2025-08-07 18:13:34.553 | INFO     | __main__:main:160 | Agent prompt configured
+2025-08-07 18:13:34.627 | INFO     | __main__:main:168 | ReAct agent created successfully
+2025-08-07 18:13:34.627 | INFO     | __main__:main:174 | Starting agent interaction loop
+2025-08-07 18:13:34.627 | INFO     | __main__:main:175 | Type 'quit' to exit the agent
+2025-08-07 18:13:34.627 | INFO     | __main__:main:176 | --------------------------------------------------
+2025-08-07 18:13:34.627 | INFO     | __main__:main:182 | Session 1: Waiting for user input
+2025-08-07 18:13:45.391 | INFO     | __main__:main:194 | Processing query: Hey what tools do you have access to
+2025-08-07 18:13:48.471 | INFO     | __main__:main:203 | Agent response generated successfully
+2025-08-07 18:13:48.481 | SUCCESS  | __main__:main:216 | Session 1 completed successfully
+2025-08-07 18:13:48.481 | INFO     | __main__:main:182 | Session 2: Waiting for user input
+2025-08-07 18:14:23.854 | INFO     | __main__:main:194 | Processing query: can you check the latest commit for the repository : https://github.com/Raghu6798/Incidence_Response_Agent/tree/main...
+2025-08-07 18:14:28.051 | INFO     | __main__:main:203 | Agent response generated successfully
+2025-08-07 18:14:28.053 | SUCCESS  | __main__:main:216 | Session 2 completed successfully
+2025-08-07 18:14:28.053 | INFO     | __main__:main:182 | Session 3: Waiting for user input
+2025-08-07 18:16:45.274 | INFO     | __main__:main:194 | Processing query: exit
+2025-08-07 18:16:46.269 | INFO     | __main__:main:203 | Agent response generated successfully
+2025-08-07 18:16:46.269 | SUCCESS  | __main__:main:216 | Session 3 completed successfully
+2025-08-07 18:16:46.274 | INFO     | __main__:main:182 | Session 4: Waiting for user input
+2025-08-07 18:16:47.210 | WARNING  | __main__:main:225 | Keyboard interrupt received
+2025-08-07 18:16:47.210 | INFO     | __main__:main:234 | Agent session ended. Total sessions processed: 4
+2025-08-07 18:16:47.210 | INFO     | __main__:main:243 | DevOps Agent shutdown complete
+2025-08-07 18:16:47.210 | INFO     | __main__:main:244 | ==================================================
+2025-08-07 23:05:38.565 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:05:38.565 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:05:38.565 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:05:38.565 | INFO     | __main__:main:30 | Starting DevOps Incident Response Agent
+2025-08-07 23:05:38.565 | INFO     | __main__:main:31 | ==================================================
+2025-08-07 23:05:38.565 | INFO     | __main__:main:37 | Configuration settings loaded successfully
+2025-08-07 23:05:38.565 | INFO     | __main__:main:43 | All required settings are present
+2025-08-07 23:05:38.565 | INFO     | __main__:main:49 | Environment: development
+2025-08-07 23:05:38.565 | INFO     | __main__:main:50 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:05:38.565 | INFO     | __main__:main:53 | Debug mode: False
+2025-08-07 23:05:38.565 | INFO     | __main__:main:96 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:05:38.565 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:05:38.565 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:05:38.565 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:05:38.565 | INFO     | __main__:main:104 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:05:40.487 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:05:40.487 | INFO     | __main__:main:113 | Model instance retrieved successfully
+2025-08-07 23:05:40.487 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:05:40.487 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:05:40.487 | INFO     | __main__:main:126 | Successfully loaded 21 GitHub tools
+2025-08-07 23:05:40.487 | INFO     | __main__:main:136 | Prometheus tool initialized successfully
+2025-08-07 23:05:40.487 | ERROR    | __main__:main:144 | Failed to initialize Kubernetes tools : 'property' object is not callable
+2025-08-07 23:05:40.487 | CRITICAL | __main__:main:244 | Critical error in main function: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:05:40.487 | ERROR    | __main__:main:245 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 255, in <module>
+    main()
+    └ <function main at 0x00000210E92FE5C0>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 147, in main
+    all_tools.append(github_tools,prometheus_tools,kubernetes_tools)
+    │         │      │            └ PrometheusTool(prometheus_url='http://localhost:9090', headers={})
+    │         │      └ [ListRepositoriesTool(github_client=<tools.github.github_tool.GitHubAPIClient object at 0x00000210F09AC9E0>), GetRepositoryTo...
+    │         └ <method 'append' of 'list' objects>
+    └ []
+
+UnboundLocalError: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:05:40.500 | INFO     | __main__:main:250 | DevOps Agent shutdown complete
+2025-08-07 23:05:40.501 | INFO     | __main__:main:251 | ==================================================
+2025-08-07 23:08:15.234 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:08:15.234 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:08:15.235 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:08:15.235 | INFO     | __main__:main:30 | Starting DevOps Incident Response Agent
+2025-08-07 23:08:15.235 | INFO     | __main__:main:31 | ==================================================
+2025-08-07 23:08:15.235 | INFO     | __main__:main:37 | Configuration settings loaded successfully
+2025-08-07 23:08:15.236 | INFO     | __main__:main:43 | All required settings are present
+2025-08-07 23:08:15.236 | INFO     | __main__:main:49 | Environment: development
+2025-08-07 23:08:15.236 | INFO     | __main__:main:50 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:08:15.237 | INFO     | __main__:main:53 | Debug mode: False
+2025-08-07 23:08:15.237 | INFO     | __main__:main:96 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:08:15.237 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:08:15.238 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:08:15.238 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:08:15.238 | INFO     | __main__:main:104 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:08:15.742 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:08:15.742 | INFO     | __main__:main:113 | Model instance retrieved successfully
+2025-08-07 23:08:15.743 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:08:15.743 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:08:15.743 | INFO     | __main__:main:126 | Successfully loaded 21 GitHub tools
+2025-08-07 23:08:15.744 | INFO     | __main__:main:136 | Prometheus tool initialized successfully
+2025-08-07 23:08:15.744 | ERROR    | __main__:main:145 | Failed to initialize Kubernetes tools : 'property' object is not callable
+2025-08-07 23:08:15.744 | CRITICAL | __main__:main:245 | Critical error in main function: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:08:15.744 | ERROR    | __main__:main:246 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 256, in <module>
+    main()
+    └ <function main at 0x000001B73B50E520>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 148, in main
+    all_tools.append(github_tools,prometheus_tools,kubernetes_tools)
+    │         │      │            └ PrometheusTool(prometheus_url='http://localhost:9090', headers={})
+    │         │      └ [ListRepositoriesTool(github_client=<tools.github.github_tool.GitHubAPIClient object at 0x000001B74383EC60>), GetRepositoryTo...
+    │         └ <method 'append' of 'list' objects>
+    └ []
+
+UnboundLocalError: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:08:15.748 | INFO     | __main__:main:251 | DevOps Agent shutdown complete
+2025-08-07 23:08:15.749 | INFO     | __main__:main:252 | ==================================================
+2025-08-07 23:09:45.531 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:09:45.531 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:09:45.531 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:09:45.531 | INFO     | __main__:main:30 | Starting DevOps Incident Response Agent
+2025-08-07 23:09:45.531 | INFO     | __main__:main:31 | ==================================================
+2025-08-07 23:09:45.531 | INFO     | __main__:main:37 | Configuration settings loaded successfully
+2025-08-07 23:09:45.531 | INFO     | __main__:main:43 | All required settings are present
+2025-08-07 23:09:45.531 | INFO     | __main__:main:49 | Environment: development
+2025-08-07 23:09:45.531 | INFO     | __main__:main:50 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:09:45.531 | INFO     | __main__:main:53 | Debug mode: False
+2025-08-07 23:09:45.531 | INFO     | __main__:main:96 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:09:45.531 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:09:45.531 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:09:45.531 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:09:45.531 | INFO     | __main__:main:104 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:09:46.047 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:09:46.047 | INFO     | __main__:main:113 | Model instance retrieved successfully
+2025-08-07 23:09:46.047 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:09:46.047 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:09:46.047 | INFO     | __main__:main:126 | Successfully loaded 21 GitHub tools
+2025-08-07 23:09:46.047 | INFO     | __main__:main:136 | Prometheus tool initialized successfully
+2025-08-07 23:09:46.047 | ERROR    | __main__:main:146 | Failed to initialize Kubernetes tools : 'property' object is not callable
+2025-08-07 23:09:46.047 | CRITICAL | __main__:main:248 | Critical error in main function: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:09:46.047 | ERROR    | __main__:main:249 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 259, in <module>
+    main()
+    └ <function main at 0x00000207E7D3E520>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 149, in main
+    all_tools = github_tools + kubernetes_tools
+                └ [ListRepositoriesTool(github_client=<tools.github.github_tool.GitHubAPIClient object at 0x00000207EF10A2D0>), GetRepositoryTo...
+
+UnboundLocalError: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:09:46.047 | INFO     | __main__:main:254 | DevOps Agent shutdown complete
+2025-08-07 23:09:46.047 | INFO     | __main__:main:255 | ==================================================
+2025-08-07 23:10:17.439 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:10:17.445 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:10:17.445 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:10:17.445 | INFO     | __main__:main:30 | Starting DevOps Incident Response Agent
+2025-08-07 23:10:17.445 | INFO     | __main__:main:31 | ==================================================
+2025-08-07 23:10:17.445 | INFO     | __main__:main:37 | Configuration settings loaded successfully
+2025-08-07 23:10:17.445 | INFO     | __main__:main:43 | All required settings are present
+2025-08-07 23:10:17.445 | INFO     | __main__:main:49 | Environment: development
+2025-08-07 23:10:17.445 | INFO     | __main__:main:50 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:10:17.445 | INFO     | __main__:main:53 | Debug mode: False
+2025-08-07 23:10:17.447 | INFO     | __main__:main:96 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:10:17.447 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:10:17.447 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:10:17.447 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:10:17.447 | INFO     | __main__:main:104 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:10:17.949 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:10:17.949 | INFO     | __main__:main:113 | Model instance retrieved successfully
+2025-08-07 23:10:17.949 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:10:17.949 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:10:17.949 | INFO     | __main__:main:126 | Successfully loaded 21 GitHub tools
+2025-08-07 23:10:17.949 | INFO     | __main__:main:136 | Prometheus tool initialized successfully
+2025-08-07 23:10:17.949 | ERROR    | __main__:main:146 | Failed to initialize Kubernetes tools : 'property' object is not callable
+2025-08-07 23:10:17.949 | CRITICAL | __main__:main:247 | Critical error in main function: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:10:17.949 | ERROR    | __main__:main:248 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 258, in <module>
+    main()
+    └ <function main at 0x0000022E1C5AE520>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 149, in main
+    all_tools = github_tools + [kubernetes_tools]
+                └ [ListRepositoriesTool(github_client=<tools.github.github_tool.GitHubAPIClient object at 0x0000022E21D9B8F0>), GetRepositoryTo...
+
+UnboundLocalError: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:10:17.959 | INFO     | __main__:main:253 | DevOps Agent shutdown complete
+2025-08-07 23:10:17.959 | INFO     | __main__:main:254 | ==================================================
+2025-08-07 23:11:34.728 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:11:34.728 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:11:34.728 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:11:34.728 | INFO     | __main__:main:30 | Starting DevOps Incident Response Agent
+2025-08-07 23:11:34.728 | INFO     | __main__:main:31 | ==================================================
+2025-08-07 23:11:34.728 | INFO     | __main__:main:37 | Configuration settings loaded successfully
+2025-08-07 23:11:34.728 | INFO     | __main__:main:43 | All required settings are present
+2025-08-07 23:11:34.728 | INFO     | __main__:main:49 | Environment: development
+2025-08-07 23:11:34.728 | INFO     | __main__:main:50 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:11:34.728 | INFO     | __main__:main:53 | Debug mode: False
+2025-08-07 23:11:34.728 | INFO     | __main__:main:96 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:11:34.728 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:11:34.728 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:11:34.728 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:11:34.728 | INFO     | __main__:main:104 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:11:35.168 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:11:35.168 | INFO     | __main__:main:113 | Model instance retrieved successfully
+2025-08-07 23:11:35.168 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:11:35.169 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:11:35.169 | INFO     | __main__:main:126 | Successfully loaded 21 GitHub tools
+2025-08-07 23:11:35.170 | INFO     | __main__:main:136 | Prometheus tool initialized successfully
+2025-08-07 23:11:35.177 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:11:35.236 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:11:35.236 | ERROR    | __main__:main:146 | Failed to initialize Kubernetes tools : 'list' object is not callable
+2025-08-07 23:11:35.236 | CRITICAL | __main__:main:247 | Critical error in main function: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:11:35.236 | ERROR    | __main__:main:248 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 258, in <module>
+    main()
+    └ <function main at 0x00000176FD08E520>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 149, in main
+    all_tools = github_tools + [kubernetes_tools]
+                └ [ListRepositoriesTool(github_client=<tools.github.github_tool.GitHubAPIClient object at 0x000001768455ABD0>), GetRepositoryTo...
+
+UnboundLocalError: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:11:35.246 | INFO     | __main__:main:253 | DevOps Agent shutdown complete
+2025-08-07 23:11:35.246 | INFO     | __main__:main:254 | ==================================================
+2025-08-07 23:12:05.659 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:12:05.659 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:12:05.659 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:12:05.659 | INFO     | __main__:main:30 | Starting DevOps Incident Response Agent
+2025-08-07 23:12:05.659 | INFO     | __main__:main:31 | ==================================================
+2025-08-07 23:12:05.659 | INFO     | __main__:main:37 | Configuration settings loaded successfully
+2025-08-07 23:12:05.659 | INFO     | __main__:main:43 | All required settings are present
+2025-08-07 23:12:05.659 | INFO     | __main__:main:49 | Environment: development
+2025-08-07 23:12:05.659 | INFO     | __main__:main:50 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:12:05.659 | INFO     | __main__:main:53 | Debug mode: False
+2025-08-07 23:12:05.659 | INFO     | __main__:main:96 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:12:05.659 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:12:05.659 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:12:05.659 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:12:05.659 | INFO     | __main__:main:104 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:12:06.188 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:12:06.188 | INFO     | __main__:main:113 | Model instance retrieved successfully
+2025-08-07 23:12:06.188 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:12:06.191 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:12:06.192 | INFO     | __main__:main:126 | Successfully loaded 21 GitHub tools
+2025-08-07 23:12:06.192 | INFO     | __main__:main:136 | Prometheus tool initialized successfully
+2025-08-07 23:12:06.192 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:12:06.203 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:12:06.279 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:12:06.279 | ERROR    | __main__:main:146 | Failed to initialize Kubernetes tools : 'list' object is not callable
+2025-08-07 23:12:06.280 | CRITICAL | __main__:main:247 | Critical error in main function: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:12:06.280 | ERROR    | __main__:main:248 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 258, in <module>
+    main()
+    └ <function main at 0x00000290A817E520>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 149, in main
+    all_tools = github_tools + [kubernetes_tools]
+                └ [ListRepositoriesTool(github_client=<tools.github.github_tool.GitHubAPIClient object at 0x00000290ADEA26F0>), GetRepositoryTo...
+
+UnboundLocalError: cannot access local variable 'kubernetes_tools' where it is not associated with a value
+2025-08-07 23:12:06.283 | INFO     | __main__:main:253 | DevOps Agent shutdown complete
+2025-08-07 23:12:06.284 | INFO     | __main__:main:254 | ==================================================
+2025-08-07 23:15:26.067 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:15:26.067 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:15:26.067 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:15:26.067 | INFO     | __main__:main:29 | Starting DevOps Incident Response Agent
+2025-08-07 23:15:26.083 | INFO     | __main__:main:30 | ==================================================
+2025-08-07 23:15:26.083 | INFO     | __main__:main:37 | Configuration settings loaded and validated successfully
+2025-08-07 23:15:26.083 | INFO     | __main__:main:40 | Environment: development
+2025-08-07 23:15:26.083 | INFO     | __main__:main:41 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:15:26.083 | INFO     | __main__:main:42 | Debug mode: False
+2025-08-07 23:15:26.083 | CRITICAL | __main__:main:166 | An unexpected critical error occurred in the main function: 'LLMSettings' object has no attribute 'get_model_config'
+2025-08-07 23:15:26.083 | INFO     | __main__:main:169 | DevOps Agent shutdown complete.
+2025-08-07 23:15:26.083 | INFO     | __main__:main:170 | ==================================================
+2025-08-07 23:18:37.725 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:18:37.725 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:18:37.725 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:18:37.725 | INFO     | __main__:main:30 | Starting DevOps Incident Response Agent
+2025-08-07 23:18:37.725 | INFO     | __main__:main:31 | ==================================================
+2025-08-07 23:18:37.725 | INFO     | __main__:main:37 | Configuration settings loaded successfully
+2025-08-07 23:18:37.725 | INFO     | __main__:main:43 | All required settings are present
+2025-08-07 23:18:37.725 | INFO     | __main__:main:49 | Environment: development
+2025-08-07 23:18:37.725 | INFO     | __main__:main:50 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:18:37.725 | INFO     | __main__:main:53 | Debug mode: False
+2025-08-07 23:18:37.725 | INFO     | __main__:main:96 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:18:37.725 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:18:37.725 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:18:37.725 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:18:37.725 | INFO     | __main__:main:104 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:18:38.237 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:18:38.237 | INFO     | __main__:main:113 | Model instance retrieved successfully
+2025-08-07 23:18:38.237 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:18:38.238 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:18:38.238 | INFO     | __main__:main:126 | Successfully loaded 21 GitHub tools
+2025-08-07 23:18:38.239 | INFO     | __main__:main:136 | Prometheus tool initialized successfully
+2025-08-07 23:18:38.239 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:18:38.242 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:18:38.311 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:18:38.311 | INFO     | __main__:main:144 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:18:38.311 | INFO     | __main__:main:170 | Agent prompt configured
+2025-08-07 23:18:38.311 | ERROR    | __main__:main:180 | Failed to create ReAct agent: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'list'>
+2025-08-07 23:18:38.311 | CRITICAL | __main__:main:247 | Critical error in main function: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'list'>
+2025-08-07 23:18:38.311 | ERROR    | __main__:main:248 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 258, in <module>
+    main()
+    └ <function main at 0x000001E9DF01E520>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 175, in main
+    devops_agent = create_react_agent(
+                   └ <function create_react_agent at 0x000001E9E3A1E480>
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\.venv\Lib\site-packages\langgraph\prebuilt\chat_agent_executor.py", line 504, in create_react_agent
+    tool_node = ToolNode([t for t in tools if not isinstance(t, dict)])
+                │                    └ [ListRepositoriesTool(github_client=<tools.github.github_tool.GitHubAPIClient object at 0x000001E9E495F440>), GetRepositoryTo...
+                └ <class 'langgraph.prebuilt.tool_node.ToolNode'>
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\.venv\Lib\site-packages\langgraph\prebuilt\tool_node.py", line 348, in __init__
+    tool_ = create_tool(tool_)
+            │           └ [ListPodsTool(api_client=<kubernetes.client.api_client.ApiClient object at 0x000001E9E74FCB90>), GetPodLogsTool(api_client=<k...
+            └ <function tool at 0x000001E9E3A1D1C0>
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\.venv\Lib\site-packages\langchain_core\tools\convert.py", line 336, in tool
+    raise ValueError(msg)
+                     └ "The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'list'>"
+
+ValueError: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'list'>
+2025-08-07 23:18:38.359 | INFO     | __main__:main:253 | DevOps Agent shutdown complete
+2025-08-07 23:18:38.359 | INFO     | __main__:main:254 | ==================================================
+2025-08-07 23:21:08.646 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:21:08.646 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:21:08.646 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:21:08.646 | INFO     | __main__:main:30 | Starting DevOps Incident Response Agent
+2025-08-07 23:21:08.646 | INFO     | __main__:main:31 | ==================================================
+2025-08-07 23:21:08.646 | INFO     | __main__:main:37 | Configuration settings loaded successfully
+2025-08-07 23:21:08.646 | INFO     | __main__:main:43 | All required settings are present
+2025-08-07 23:21:08.646 | INFO     | __main__:main:49 | Environment: development
+2025-08-07 23:21:08.646 | INFO     | __main__:main:50 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:21:08.646 | INFO     | __main__:main:53 | Debug mode: False
+2025-08-07 23:21:08.646 | INFO     | __main__:main:96 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:21:08.646 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:21:08.646 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:21:08.646 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:21:08.646 | INFO     | __main__:main:104 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:21:09.203 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:21:09.205 | INFO     | __main__:main:113 | Model instance retrieved successfully
+2025-08-07 23:21:09.205 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:21:09.205 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:21:09.206 | INFO     | __main__:main:126 | Successfully loaded 21 GitHub tools
+2025-08-07 23:21:09.206 | INFO     | __main__:main:136 | Prometheus tool initialized successfully
+2025-08-07 23:21:09.206 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:21:09.211 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:21:09.289 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:21:09.289 | INFO     | __main__:main:144 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:21:09.289 | INFO     | __main__:main:168 | Agent prompt configured
+2025-08-07 23:21:09.289 | ERROR    | __main__:main:178 | Failed to create ReAct agent: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'tuple'>
+2025-08-07 23:21:09.289 | CRITICAL | __main__:main:245 | Critical error in main function: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'tuple'>
+2025-08-07 23:21:09.289 | ERROR    | __main__:main:246 | Full traceback:
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 256, in <module>
+    main()
+    └ <function main at 0x000001881030E520>
+
+> File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\src\main\react_agent.py", line 173, in main
+    devops_agent = create_react_agent(
+                   └ <function create_react_agent at 0x0000018814C9E480>
+
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\.venv\Lib\site-packages\langgraph\prebuilt\chat_agent_executor.py", line 504, in create_react_agent
+    tool_node = ToolNode([t for t in tools if not isinstance(t, dict)])
+                │                    └ [ListRepositoriesTool(github_client=<tools.github.github_tool.GitHubAPIClient object at 0x0000018815694980>), GetRepositoryTo...
+                └ <class 'langgraph.prebuilt.tool_node.ToolNode'>
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\.venv\Lib\site-packages\langgraph\prebuilt\tool_node.py", line 348, in __init__
+    tool_ = create_tool(tool_)
+            │           └ ('name', 'prometheus_query')
+            └ <function tool at 0x0000018814C9D1C0>
+  File "C:\Users\Raghu\Downloads\Incidence_response_agent\DevOps_Agent\.venv\Lib\site-packages\langchain_core\tools\convert.py", line 336, in tool
+    raise ValueError(msg)
+                     └ "The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'tuple'>"
+
+ValueError: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'tuple'>
+2025-08-07 23:21:09.301 | INFO     | __main__:main:251 | DevOps Agent shutdown complete
+2025-08-07 23:21:09.301 | INFO     | __main__:main:252 | ==================================================
+2025-08-07 23:28:13.281 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:28:13.281 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:28:13.281 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:28:13.281 | INFO     | __main__:main:124 | Starting DevOps Incident Response Agent
+2025-08-07 23:28:13.281 | INFO     | __main__:main:125 | ==================================================
+2025-08-07 23:28:13.281 | INFO     | __main__:main:128 | Loading configuration settings...
+2025-08-07 23:28:13.281 | INFO     | __main__:main:130 | Configuration settings loaded successfully
+2025-08-07 23:28:13.281 | CRITICAL | __main__:main:331 | Critical error in main function: LLM settings not found in configuration
+2025-08-07 23:28:13.281 | ERROR    | __main__:main:332 | Full traceback:
+2025-08-07 23:28:13.281 | INFO     | __main__:main:336 | DevOps Agent shutdown complete
+2025-08-07 23:28:13.281 | INFO     | __main__:main:337 | ==================================================
+2025-08-07 23:30:09.349 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:30:09.349 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:30:09.349 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:30:09.349 | INFO     | __main__:main:125 | Starting DevOps Incident Response Agent
+2025-08-07 23:30:09.361 | INFO     | __main__:main:126 | ==================================================
+2025-08-07 23:30:09.361 | INFO     | __main__:main:129 | Creating LLM provider...
+2025-08-07 23:30:09.361 | INFO     | __main__:main:133 | Configuration settings loaded successfully
+2025-08-07 23:30:09.361 | INFO     | __main__:main:139 | All required settings are present
+2025-08-07 23:30:09.361 | INFO     | __main__:main:145 | Environment: development
+2025-08-07 23:30:09.361 | INFO     | __main__:main:146 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:30:09.361 | INFO     | __main__:main:149 | Debug mode: False
+2025-08-07 23:30:09.361 | INFO     | __main__:main:192 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:30:09.361 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:30:09.361 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:30:09.361 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:30:09.361 | INFO     | __main__:main:200 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:30:09.857 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:30:09.857 | INFO     | __main__:main:209 | Model instance retrieved successfully
+2025-08-07 23:30:09.857 | INFO     | __main__:main:215 | Loading tools...
+2025-08-07 23:30:09.858 | INFO     | __main__:load_github_tools:59 | Loading GitHub tools...
+2025-08-07 23:30:09.858 | ERROR    | __main__:load_github_tools:66 | Failed to load GitHub tools: type object 'GitHubToolset' has no attribute 'from_env'
+2025-08-07 23:30:09.858 | INFO     | __main__:load_kubernetes_tools:72 | Loading Kubernetes tools...
+2025-08-07 23:30:09.859 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:30:09.861 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:30:09.943 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:30:09.943 | INFO     | __main__:validate_tools_structure:39 | Validating Kubernetes tools structure...
+2025-08-07 23:30:09.944 | SUCCESS  | __main__:validate_tools_structure:54 | Kubernetes tools structure validated: 11 tools
+2025-08-07 23:30:09.944 | SUCCESS  | __main__:load_kubernetes_tools:76 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:30:09.944 | INFO     | __main__:load_prometheus_tools:85 | Loading Prometheus tools...
+2025-08-07 23:30:09.944 | ERROR    | __main__:load_prometheus_tools:92 | Failed to load Prometheus tools: from_env
+2025-08-07 23:30:09.944 | INFO     | __main__:main:227 | Combining all tools...
+2025-08-07 23:30:09.944 | INFO     | __main__:validate_tools_structure:39 | Validating Combined tools structure...
+2025-08-07 23:30:09.944 | SUCCESS  | __main__:validate_tools_structure:54 | Combined tools structure validated: 11 tools
+2025-08-07 23:30:09.944 | SUCCESS  | __main__:main:236 | Total tools loaded: 11
+2025-08-07 23:30:09.944 | INFO     | __main__:main:240 | Tool names: ['list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets']
+2025-08-07 23:30:09.947 | INFO     | __main__:main:243 | Creating agent prompt...
+2025-08-07 23:30:09.947 | INFO     | __main__:main:245 | Agent prompt configured
+2025-08-07 23:30:09.947 | INFO     | __main__:main:249 | Memory checkpointer created
+2025-08-07 23:30:09.947 | INFO     | __main__:main:252 | Creating ReAct agent...
+2025-08-07 23:30:09.987 | SUCCESS  | __main__:main:259 | DevOps ReAct agent created successfully
+2025-08-07 23:30:09.988 | INFO     | __main__:main:270 | ==================================================
+2025-08-07 23:30:09.988 | INFO     | __main__:main:271 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-07 23:30:09.988 | INFO     | __main__:main:272 | ==================================================
+2025-08-07 23:30:55.794 | INFO     | __main__:main:304 | Received interrupt signal, shutting down...
+2025-08-07 23:30:55.794 | INFO     | __main__:main:316 | DevOps Agent shutdown complete
+2025-08-07 23:30:55.795 | INFO     | __main__:main:317 | ==================================================
+2025-08-07 23:31:00.305 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:31:00.305 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:31:00.305 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:31:00.305 | INFO     | __main__:main:114 | Starting DevOps Incident Response Agent
+2025-08-07 23:31:00.305 | INFO     | __main__:main:115 | ==================================================
+2025-08-07 23:31:00.305 | INFO     | __main__:main:118 | Creating LLM provider...
+2025-08-07 23:31:00.305 | INFO     | __main__:main:122 | Configuration settings loaded successfully
+2025-08-07 23:31:00.305 | INFO     | __main__:main:128 | All required settings are present
+2025-08-07 23:31:00.305 | INFO     | __main__:main:134 | Environment: development
+2025-08-07 23:31:00.305 | INFO     | __main__:main:135 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:31:00.305 | INFO     | __main__:main:138 | Debug mode: False
+2025-08-07 23:31:00.305 | INFO     | __main__:main:181 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:31:00.305 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:31:00.305 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:31:00.305 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:31:00.305 | INFO     | __main__:main:189 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:31:00.807 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:31:00.808 | INFO     | __main__:main:198 | Model instance retrieved successfully
+2025-08-07 23:31:00.808 | INFO     | __main__:main:204 | Loading tools...
+2025-08-07 23:31:00.808 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:31:00.809 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:31:00.809 | INFO     | __main__:main:213 | Successfully loaded 21 GitHub tools
+2025-08-07 23:31:00.810 | INFO     | __main__:load_kubernetes_tools:61 | Loading Kubernetes tools...
+2025-08-07 23:31:00.810 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:31:00.817 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:31:00.891 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:31:00.891 | INFO     | __main__:validate_tools_structure:39 | Validating Kubernetes tools structure...
+2025-08-07 23:31:00.892 | SUCCESS  | __main__:validate_tools_structure:54 | Kubernetes tools structure validated: 11 tools
+2025-08-07 23:31:00.892 | SUCCESS  | __main__:load_kubernetes_tools:65 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:31:00.892 | INFO     | __main__:load_prometheus_tools:74 | Loading Prometheus tools...
+2025-08-07 23:31:00.893 | ERROR    | __main__:load_prometheus_tools:81 | Failed to load Prometheus tools: from_env
+2025-08-07 23:31:00.893 | INFO     | __main__:main:226 | Combining all tools...
+2025-08-07 23:31:00.893 | INFO     | __main__:validate_tools_structure:39 | Validating Combined tools structure...
+2025-08-07 23:31:00.893 | SUCCESS  | __main__:validate_tools_structure:54 | Combined tools structure validated: 32 tools
+2025-08-07 23:31:00.894 | SUCCESS  | __main__:main:235 | Total tools loaded: 32
+2025-08-07 23:31:00.894 | INFO     | __main__:main:239 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets']
+2025-08-07 23:31:00.894 | INFO     | __main__:main:242 | Creating agent prompt...
+2025-08-07 23:31:00.894 | INFO     | __main__:main:244 | Agent prompt configured
+2025-08-07 23:31:00.895 | INFO     | __main__:main:248 | Memory checkpointer created
+2025-08-07 23:31:00.895 | INFO     | __main__:main:251 | Creating ReAct agent...
+2025-08-07 23:31:00.994 | SUCCESS  | __main__:main:258 | DevOps ReAct agent created successfully
+2025-08-07 23:31:00.994 | INFO     | __main__:main:269 | ==================================================
+2025-08-07 23:31:00.994 | INFO     | __main__:main:270 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-07 23:31:00.994 | INFO     | __main__:main:271 | ==================================================
+2025-08-07 23:33:15.361 | INFO     | __main__:main:303 | Received interrupt signal, shutting down...
+2025-08-07 23:33:15.362 | INFO     | __main__:main:315 | DevOps Agent shutdown complete
+2025-08-07 23:33:15.362 | INFO     | __main__:main:316 | ==================================================
+2025-08-07 23:33:19.907 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:33:19.907 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:33:19.907 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:33:19.923 | INFO     | __main__:main:113 | Starting DevOps Incident Response Agent
+2025-08-07 23:33:19.923 | INFO     | __main__:main:114 | ==================================================
+2025-08-07 23:33:19.923 | INFO     | __main__:main:117 | Creating LLM provider...
+2025-08-07 23:33:19.923 | INFO     | __main__:main:121 | Configuration settings loaded successfully
+2025-08-07 23:33:19.923 | INFO     | __main__:main:127 | All required settings are present
+2025-08-07 23:33:19.923 | INFO     | __main__:main:133 | Environment: development
+2025-08-07 23:33:19.923 | INFO     | __main__:main:134 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:33:19.923 | INFO     | __main__:main:137 | Debug mode: False
+2025-08-07 23:33:19.923 | INFO     | __main__:main:180 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:33:19.923 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:33:19.923 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:33:19.923 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:33:19.923 | INFO     | __main__:main:187 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:33:20.422 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:33:20.423 | INFO     | __main__:main:196 | Model instance retrieved successfully
+2025-08-07 23:33:20.424 | INFO     | __main__:main:202 | Loading tools...
+2025-08-07 23:33:20.424 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:33:20.425 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:33:20.425 | INFO     | __main__:main:211 | Successfully loaded 21 GitHub tools
+2025-08-07 23:33:20.425 | INFO     | __main__:load_kubernetes_tools:60 | Loading Kubernetes tools...
+2025-08-07 23:33:20.426 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:33:20.434 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:33:20.502 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:33:20.502 | INFO     | __main__:validate_tools_structure:38 | Validating Kubernetes tools structure...
+2025-08-07 23:33:20.502 | SUCCESS  | __main__:validate_tools_structure:53 | Kubernetes tools structure validated: 11 tools
+2025-08-07 23:33:20.502 | SUCCESS  | __main__:load_kubernetes_tools:64 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:33:20.502 | INFO     | __main__:main:226 | Combining all tools...
+2025-08-07 23:33:20.502 | INFO     | __main__:validate_tools_structure:38 | Validating Combined tools structure...
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 32 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 33 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 34 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 35 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 36 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 37 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 38 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 39 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 40 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 41 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 42 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 43 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 44 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 45 missing 'name' attribute
+2025-08-07 23:33:20.502 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 46 missing 'name' attribute
+2025-08-07 23:33:20.502 | SUCCESS  | __main__:validate_tools_structure:53 | Combined tools structure validated: 47 tools
+2025-08-07 23:33:20.502 | SUCCESS  | __main__:main:235 | Total tools loaded: 47
+2025-08-07 23:33:20.502 | INFO     | __main__:main:239 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown']
+2025-08-07 23:33:20.502 | INFO     | __main__:main:242 | Creating agent prompt...
+2025-08-07 23:33:20.502 | INFO     | __main__:main:244 | Agent prompt configured
+2025-08-07 23:33:20.514 | INFO     | __main__:main:248 | Memory checkpointer created
+2025-08-07 23:33:20.514 | INFO     | __main__:main:251 | Creating ReAct agent...
+2025-08-07 23:33:20.517 | CRITICAL | __main__:main:310 | Critical error in main function: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'tuple'>
+2025-08-07 23:33:20.518 | ERROR    | __main__:main:311 | Full traceback:
+2025-08-07 23:33:20.518 | INFO     | __main__:main:315 | DevOps Agent shutdown complete
+2025-08-07 23:33:20.518 | INFO     | __main__:main:316 | ==================================================
+2025-08-07 23:34:02.739 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:34:02.739 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:34:02.739 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:34:02.739 | INFO     | __main__:main:113 | Starting DevOps Incident Response Agent
+2025-08-07 23:34:02.739 | INFO     | __main__:main:114 | ==================================================
+2025-08-07 23:34:02.739 | INFO     | __main__:main:117 | Creating LLM provider...
+2025-08-07 23:34:02.739 | INFO     | __main__:main:121 | Configuration settings loaded successfully
+2025-08-07 23:34:02.739 | INFO     | __main__:main:127 | All required settings are present
+2025-08-07 23:34:02.755 | INFO     | __main__:main:133 | Environment: development
+2025-08-07 23:34:02.755 | INFO     | __main__:main:134 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:34:02.755 | INFO     | __main__:main:137 | Debug mode: False
+2025-08-07 23:34:02.755 | INFO     | __main__:main:180 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:34:02.755 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:34:02.755 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:34:02.756 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:34:02.756 | INFO     | __main__:main:187 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:34:03.244 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:34:03.244 | INFO     | __main__:main:196 | Model instance retrieved successfully
+2025-08-07 23:34:03.257 | INFO     | __main__:main:202 | Loading tools...
+2025-08-07 23:34:03.257 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:34:03.257 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:34:03.257 | INFO     | __main__:main:211 | Successfully loaded 21 GitHub tools
+2025-08-07 23:34:03.257 | INFO     | __main__:load_kubernetes_tools:60 | Loading Kubernetes tools...
+2025-08-07 23:34:03.257 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:34:03.264 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:34:03.336 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:34:03.336 | INFO     | __main__:validate_tools_structure:38 | Validating Kubernetes tools structure...
+2025-08-07 23:34:03.336 | SUCCESS  | __main__:validate_tools_structure:53 | Kubernetes tools structure validated: 11 tools
+2025-08-07 23:34:03.336 | SUCCESS  | __main__:load_kubernetes_tools:64 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:34:03.336 | INFO     | __main__:main:226 | Combining all tools...
+2025-08-07 23:34:03.336 | INFO     | __main__:validate_tools_structure:38 | Validating Combined tools structure...
+2025-08-07 23:34:03.336 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 32 missing 'name' attribute
+2025-08-07 23:34:03.336 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 33 missing 'name' attribute
+2025-08-07 23:34:03.336 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 34 missing 'name' attribute
+2025-08-07 23:34:03.336 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 35 missing 'name' attribute
+2025-08-07 23:34:03.336 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 36 missing 'name' attribute
+2025-08-07 23:34:03.336 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 37 missing 'name' attribute
+2025-08-07 23:34:03.336 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 38 missing 'name' attribute
+2025-08-07 23:34:03.346 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 39 missing 'name' attribute
+2025-08-07 23:34:03.346 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 40 missing 'name' attribute
+2025-08-07 23:34:03.346 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 41 missing 'name' attribute
+2025-08-07 23:34:03.346 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 42 missing 'name' attribute
+2025-08-07 23:34:03.346 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 43 missing 'name' attribute
+2025-08-07 23:34:03.346 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 44 missing 'name' attribute
+2025-08-07 23:34:03.346 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 45 missing 'name' attribute
+2025-08-07 23:34:03.348 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 46 missing 'name' attribute
+2025-08-07 23:34:03.348 | SUCCESS  | __main__:validate_tools_structure:53 | Combined tools structure validated: 47 tools
+2025-08-07 23:34:03.348 | SUCCESS  | __main__:main:235 | Total tools loaded: 47
+2025-08-07 23:34:03.349 | INFO     | __main__:main:239 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown']
+2025-08-07 23:34:03.349 | INFO     | __main__:main:242 | Creating agent prompt...
+2025-08-07 23:34:03.349 | INFO     | __main__:main:244 | Agent prompt configured
+2025-08-07 23:34:03.349 | INFO     | __main__:main:248 | Memory checkpointer created
+2025-08-07 23:34:03.350 | INFO     | __main__:main:251 | Creating ReAct agent...
+2025-08-07 23:34:03.352 | CRITICAL | __main__:main:310 | Critical error in main function: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'tuple'>
+2025-08-07 23:34:03.353 | ERROR    | __main__:main:311 | Full traceback:
+2025-08-07 23:34:03.353 | INFO     | __main__:main:315 | DevOps Agent shutdown complete
+2025-08-07 23:34:03.353 | INFO     | __main__:main:316 | ==================================================
+2025-08-07 23:39:22.714 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:39:22.716 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:39:22.716 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:39:22.716 | INFO     | __main__:main:115 | Starting DevOps Incident Response Agent
+2025-08-07 23:39:22.716 | INFO     | __main__:main:116 | ==================================================
+2025-08-07 23:39:22.717 | INFO     | __main__:main:119 | Creating LLM provider...
+2025-08-07 23:39:22.717 | INFO     | __main__:main:123 | Configuration settings loaded successfully
+2025-08-07 23:39:22.717 | INFO     | __main__:main:129 | All required settings are present
+2025-08-07 23:39:22.717 | INFO     | __main__:main:135 | Environment: development
+2025-08-07 23:39:22.718 | INFO     | __main__:main:136 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:39:22.718 | INFO     | __main__:main:139 | Debug mode: False
+2025-08-07 23:39:22.718 | INFO     | __main__:main:182 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:39:22.719 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:39:22.719 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:39:22.719 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:39:22.719 | INFO     | __main__:main:189 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:39:23.509 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:39:23.509 | INFO     | __main__:main:198 | Model instance retrieved successfully
+2025-08-07 23:39:23.509 | INFO     | __main__:main:204 | Loading tools...
+2025-08-07 23:39:23.510 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:39:23.510 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:39:23.511 | INFO     | __main__:main:213 | Successfully loaded 21 GitHub tools
+2025-08-07 23:39:23.511 | INFO     | __main__:load_kubernetes_tools:60 | Loading Kubernetes tools...
+2025-08-07 23:39:23.511 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:39:23.519 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:39:23.594 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:39:23.595 | INFO     | __main__:validate_tools_structure:38 | Validating Kubernetes tools structure...
+2025-08-07 23:39:23.595 | SUCCESS  | __main__:validate_tools_structure:53 | Kubernetes tools structure validated: 11 tools
+2025-08-07 23:39:23.596 | SUCCESS  | __main__:load_kubernetes_tools:64 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:39:23.596 | CRITICAL | __main__:main:312 | Critical error in main function: name 'PrometheusToolBuilder' is not defined
+2025-08-07 23:39:23.596 | ERROR    | __main__:main:313 | Full traceback:
+2025-08-07 23:39:23.596 | INFO     | __main__:main:317 | DevOps Agent shutdown complete
+2025-08-07 23:39:23.596 | INFO     | __main__:main:318 | ==================================================
+2025-08-07 23:39:46.351 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:39:46.352 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:39:46.353 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:39:46.353 | INFO     | __main__:main:115 | Starting DevOps Incident Response Agent
+2025-08-07 23:39:46.353 | INFO     | __main__:main:116 | ==================================================
+2025-08-07 23:39:46.353 | INFO     | __main__:main:119 | Creating LLM provider...
+2025-08-07 23:39:46.353 | INFO     | __main__:main:123 | Configuration settings loaded successfully
+2025-08-07 23:39:46.353 | INFO     | __main__:main:129 | All required settings are present
+2025-08-07 23:39:46.355 | INFO     | __main__:main:135 | Environment: development
+2025-08-07 23:39:46.355 | INFO     | __main__:main:136 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:39:46.355 | INFO     | __main__:main:139 | Debug mode: False
+2025-08-07 23:39:46.356 | INFO     | __main__:main:182 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:39:46.356 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:39:46.356 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:39:46.356 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:39:46.357 | INFO     | __main__:main:189 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:39:46.879 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:39:46.879 | INFO     | __main__:main:198 | Model instance retrieved successfully
+2025-08-07 23:39:46.880 | INFO     | __main__:main:204 | Loading tools...
+2025-08-07 23:39:46.881 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:39:46.881 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:39:46.881 | INFO     | __main__:main:213 | Successfully loaded 21 GitHub tools
+2025-08-07 23:39:46.881 | INFO     | __main__:load_kubernetes_tools:60 | Loading Kubernetes tools...
+2025-08-07 23:39:46.882 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:39:46.889 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:39:46.965 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:39:46.965 | INFO     | __main__:validate_tools_structure:38 | Validating Kubernetes tools structure...
+2025-08-07 23:39:46.965 | SUCCESS  | __main__:validate_tools_structure:53 | Kubernetes tools structure validated: 11 tools
+2025-08-07 23:39:46.966 | SUCCESS  | __main__:load_kubernetes_tools:64 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:39:46.967 | INFO     | __main__:main:228 | Combining all tools...
+2025-08-07 23:39:46.967 | INFO     | __main__:validate_tools_structure:38 | Validating Combined tools structure...
+2025-08-07 23:39:46.968 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 32 missing 'name' attribute
+2025-08-07 23:39:46.968 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 33 missing 'name' attribute
+2025-08-07 23:39:46.968 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 34 missing 'name' attribute
+2025-08-07 23:39:46.968 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 35 missing 'name' attribute
+2025-08-07 23:39:46.969 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 36 missing 'name' attribute
+2025-08-07 23:39:46.969 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 37 missing 'name' attribute
+2025-08-07 23:39:46.969 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 38 missing 'name' attribute
+2025-08-07 23:39:46.970 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 39 missing 'name' attribute
+2025-08-07 23:39:46.970 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 40 missing 'name' attribute
+2025-08-07 23:39:46.970 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 41 missing 'name' attribute
+2025-08-07 23:39:46.971 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 42 missing 'name' attribute
+2025-08-07 23:39:46.971 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 43 missing 'name' attribute
+2025-08-07 23:39:46.971 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 44 missing 'name' attribute
+2025-08-07 23:39:46.971 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 45 missing 'name' attribute
+2025-08-07 23:39:46.971 | WARNING  | __main__:validate_tools_structure:51 | Combined tool at index 46 missing 'name' attribute
+2025-08-07 23:39:46.971 | SUCCESS  | __main__:validate_tools_structure:53 | Combined tools structure validated: 47 tools
+2025-08-07 23:39:46.971 | SUCCESS  | __main__:main:237 | Total tools loaded: 47
+2025-08-07 23:39:46.973 | INFO     | __main__:main:241 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown']
+2025-08-07 23:39:46.973 | INFO     | __main__:main:244 | Creating agent prompt...
+2025-08-07 23:39:46.973 | INFO     | __main__:main:246 | Agent prompt configured
+2025-08-07 23:39:46.974 | INFO     | __main__:main:250 | Memory checkpointer created
+2025-08-07 23:39:46.974 | INFO     | __main__:main:253 | Creating ReAct agent...
+2025-08-07 23:39:46.977 | CRITICAL | __main__:main:312 | Critical error in main function: The first argument must be a string or a callable with a __name__ for tool decorator. Got <class 'tuple'>
+2025-08-07 23:39:46.977 | ERROR    | __main__:main:313 | Full traceback:
+2025-08-07 23:39:46.977 | INFO     | __main__:main:317 | DevOps Agent shutdown complete
+2025-08-07 23:39:46.978 | INFO     | __main__:main:318 | ==================================================
+2025-08-07 23:41:23.169 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-07 23:41:23.169 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-07 23:41:23.170 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-07 23:41:23.170 | INFO     | __main__:main:129 | Starting DevOps Incident Response Agent
+2025-08-07 23:41:23.170 | INFO     | __main__:main:130 | ==================================================
+2025-08-07 23:41:23.170 | INFO     | __main__:main:133 | Creating LLM provider...
+2025-08-07 23:41:23.171 | INFO     | __main__:main:137 | Configuration settings loaded successfully
+2025-08-07 23:41:23.171 | INFO     | __main__:main:143 | All required settings are present
+2025-08-07 23:41:23.172 | INFO     | __main__:main:149 | Environment: development
+2025-08-07 23:41:23.172 | INFO     | __main__:main:150 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-07 23:41:23.172 | INFO     | __main__:main:153 | Debug mode: False
+2025-08-07 23:41:23.172 | INFO     | __main__:main:196 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-07 23:41:23.172 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-07 23:41:23.173 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-07 23:41:23.173 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-07 23:41:23.173 | INFO     | __main__:main:203 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-07 23:41:23.679 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-07 23:41:23.680 | INFO     | __main__:main:212 | Model instance retrieved successfully
+2025-08-07 23:41:23.680 | INFO     | __main__:main:218 | Loading tools...
+2025-08-07 23:41:23.681 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-07 23:41:23.681 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-07 23:41:23.681 | INFO     | __main__:main:227 | Successfully loaded 21 GitHub tools
+2025-08-07 23:41:23.682 | INFO     | __main__:load_kubernetes_tools:59 | Loading Kubernetes tools...
+2025-08-07 23:41:23.682 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-07 23:41:23.690 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-07 23:41:23.763 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-07 23:41:23.763 | INFO     | __main__:validate_tools_structure:38 | Validating Kubernetes tools structure...
+2025-08-07 23:41:23.764 | SUCCESS  | __main__:validate_tools_structure:53 | Kubernetes tools structure validated: 11 tools
+2025-08-07 23:41:23.764 | SUCCESS  | __main__:load_kubernetes_tools:63 | Successfully loaded 11 Kubernetes tools
+2025-08-07 23:41:23.764 | INFO     | __main__:load_prometheus_tools:73 | Loading Prometheus tools...
+2025-08-07 23:41:23.764 | INFO     | __main__:load_prometheus_tools:78 | Loaded Prometheus tool from environment variables
+2025-08-07 23:41:23.765 | INFO     | __main__:validate_tools_structure:38 | Validating Prometheus tools structure...
+2025-08-07 23:41:23.765 | SUCCESS  | __main__:validate_tools_structure:53 | Prometheus tools structure validated: 1 tools
+2025-08-07 23:41:23.765 | SUCCESS  | __main__:load_prometheus_tools:90 | Successfully loaded 1 Prometheus tools
+2025-08-07 23:41:23.765 | INFO     | __main__:main:242 | Combining all tools...
+2025-08-07 23:41:23.766 | INFO     | __main__:validate_tools_structure:38 | Validating Combined tools structure...
+2025-08-07 23:41:23.766 | SUCCESS  | __main__:validate_tools_structure:53 | Combined tools structure validated: 33 tools
+2025-08-07 23:41:23.766 | SUCCESS  | __main__:main:251 | Total tools loaded: 33
+2025-08-07 23:41:23.766 | INFO     | __main__:main:255 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'prometheus_query']
+2025-08-07 23:41:23.767 | INFO     | __main__:main:258 | Creating agent prompt...
+2025-08-07 23:41:23.767 | INFO     | __main__:main:260 | Agent prompt configured
+2025-08-07 23:41:23.767 | INFO     | __main__:main:264 | Memory checkpointer created
+2025-08-07 23:41:23.768 | INFO     | __main__:main:267 | Creating ReAct agent...
+2025-08-07 23:41:23.938 | SUCCESS  | __main__:main:274 | DevOps ReAct agent created successfully
+2025-08-07 23:41:23.938 | INFO     | __main__:main:285 | ==================================================
+2025-08-07 23:41:23.938 | INFO     | __main__:main:286 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-07 23:41:23.939 | INFO     | __main__:main:287 | ==================================================
+2025-08-07 23:42:40.694 | INFO     | __main__:main:300 | Processing user input: What are your core capabilities
+2025-08-07 23:44:40.512 | INFO     | __main__:main:319 | Received interrupt signal, shutting down...
+2025-08-07 23:44:40.512 | INFO     | __main__:main:331 | DevOps Agent shutdown complete
+2025-08-07 23:44:40.512 | INFO     | __main__:main:332 | ==================================================
+2025-08-08 00:13:07.565 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-08 00:13:07.565 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-08 00:13:07.565 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-08 00:13:07.565 | INFO     | __main__:main:129 | Starting DevOps Incident Response Agent
+2025-08-08 00:13:07.565 | INFO     | __main__:main:130 | ==================================================
+2025-08-08 00:13:07.565 | INFO     | __main__:main:133 | Creating LLM provider...
+2025-08-08 00:13:07.565 | INFO     | __main__:main:137 | Configuration settings loaded successfully
+2025-08-08 00:13:07.565 | INFO     | __main__:main:143 | All required settings are present
+2025-08-08 00:13:07.565 | INFO     | __main__:main:149 | Environment: development
+2025-08-08 00:13:07.565 | INFO     | __main__:main:150 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-08 00:13:07.565 | INFO     | __main__:main:153 | Debug mode: False
+2025-08-08 00:13:07.565 | INFO     | __main__:main:196 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-08 00:13:07.565 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-08 00:13:07.565 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-08 00:13:07.565 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-08 00:13:07.565 | INFO     | __main__:main:203 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-08 00:13:08.285 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-08 00:13:08.285 | INFO     | __main__:main:212 | Model instance retrieved successfully
+2025-08-08 00:13:08.285 | INFO     | __main__:main:218 | Loading tools...
+2025-08-08 00:13:08.285 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-08 00:13:08.285 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-08 00:13:08.285 | INFO     | __main__:main:227 | Successfully loaded 21 GitHub tools
+2025-08-08 00:13:08.285 | INFO     | __main__:load_kubernetes_tools:59 | Loading Kubernetes tools...
+2025-08-08 00:13:08.285 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-08 00:13:08.285 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-08 00:13:08.366 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-08 00:13:08.366 | INFO     | __main__:validate_tools_structure:38 | Validating Kubernetes tools structure...
+2025-08-08 00:13:08.366 | SUCCESS  | __main__:validate_tools_structure:53 | Kubernetes tools structure validated: 11 tools
+2025-08-08 00:13:08.366 | SUCCESS  | __main__:load_kubernetes_tools:63 | Successfully loaded 11 Kubernetes tools
+2025-08-08 00:13:08.366 | INFO     | __main__:load_prometheus_tools:73 | Loading Prometheus tools...
+2025-08-08 00:13:08.366 | INFO     | __main__:load_prometheus_tools:78 | Loaded Prometheus tool from environment variables
+2025-08-08 00:13:08.366 | INFO     | __main__:validate_tools_structure:38 | Validating Prometheus tools structure...
+2025-08-08 00:13:08.366 | WARNING  | __main__:validate_tools_structure:51 | Prometheus tool at index 0 missing 'name' attribute
+2025-08-08 00:13:08.366 | SUCCESS  | __main__:validate_tools_structure:53 | Prometheus tools structure validated: 1 tools
+2025-08-08 00:13:08.366 | SUCCESS  | __main__:load_prometheus_tools:90 | Successfully loaded 1 Prometheus tools
+2025-08-08 00:13:08.366 | ERROR    | __main__:load_prometheus_tools:94 | Failed to load Prometheus tools: 'function' object has no attribute 'name'
+2025-08-08 00:13:08.366 | INFO     | __main__:main:242 | Combining all tools...
+2025-08-08 00:13:08.366 | INFO     | __main__:validate_tools_structure:38 | Validating Combined tools structure...
+2025-08-08 00:13:08.366 | SUCCESS  | __main__:validate_tools_structure:53 | Combined tools structure validated: 32 tools
+2025-08-08 00:13:08.366 | SUCCESS  | __main__:main:251 | Total tools loaded: 32
+2025-08-08 00:13:08.378 | INFO     | __main__:main:255 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets']
+2025-08-08 00:13:08.378 | INFO     | __main__:main:258 | Creating agent prompt...
+2025-08-08 00:13:08.378 | INFO     | __main__:main:260 | Agent prompt configured
+2025-08-08 00:13:08.378 | INFO     | __main__:main:264 | Memory checkpointer created
+2025-08-08 00:13:08.378 | INFO     | __main__:main:267 | Creating ReAct agent...
+2025-08-08 00:13:08.540 | SUCCESS  | __main__:main:274 | DevOps ReAct agent created successfully
+2025-08-08 00:13:08.540 | INFO     | __main__:main:285 | ==================================================
+2025-08-08 00:13:08.540 | INFO     | __main__:main:286 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-08 00:13:08.540 | INFO     | __main__:main:287 | ==================================================
+2025-08-08 00:13:19.563 | INFO     | __main__:main:300 | Processing user input: What tools do you have access to
+2025-08-08 00:13:34.522 | INFO     | __main__:main:300 | Processing user input: What kind of Prometheus tools do you have access to
+2025-08-08 00:16:42.508 | INFO     | __main__:main:319 | Received interrupt signal, shutting down...
+2025-08-08 00:16:42.508 | INFO     | __main__:main:331 | DevOps Agent shutdown complete
+2025-08-08 00:16:42.508 | INFO     | __main__:main:332 | ==================================================
+2025-08-08 00:16:49.561 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-08 00:16:49.561 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-08 00:16:49.561 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-08 00:16:49.561 | INFO     | __main__:main:129 | Starting DevOps Incident Response Agent
+2025-08-08 00:16:49.561 | INFO     | __main__:main:130 | ==================================================
+2025-08-08 00:16:49.563 | INFO     | __main__:main:133 | Creating LLM provider...
+2025-08-08 00:16:49.563 | INFO     | __main__:main:137 | Configuration settings loaded successfully
+2025-08-08 00:16:49.563 | INFO     | __main__:main:143 | All required settings are present
+2025-08-08 00:16:49.564 | INFO     | __main__:main:149 | Environment: development
+2025-08-08 00:16:49.564 | INFO     | __main__:main:150 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-08 00:16:49.564 | INFO     | __main__:main:153 | Debug mode: False
+2025-08-08 00:16:49.565 | INFO     | __main__:main:196 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-08 00:16:49.565 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-08 00:16:49.565 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-08 00:16:49.565 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-08 00:16:49.566 | INFO     | __main__:main:203 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-08 00:16:50.233 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-08 00:16:50.233 | INFO     | __main__:main:212 | Model instance retrieved successfully
+2025-08-08 00:16:50.233 | INFO     | __main__:main:218 | Loading tools...
+2025-08-08 00:16:50.233 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-08 00:16:50.233 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-08 00:16:50.233 | INFO     | __main__:main:227 | Successfully loaded 21 GitHub tools
+2025-08-08 00:16:50.233 | INFO     | __main__:load_kubernetes_tools:59 | Loading Kubernetes tools...
+2025-08-08 00:16:50.233 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-08 00:16:50.245 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-08 00:16:50.323 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-08 00:16:50.323 | INFO     | __main__:validate_tools_structure:38 | Validating Kubernetes tools structure...
+2025-08-08 00:16:50.323 | SUCCESS  | __main__:validate_tools_structure:53 | Kubernetes tools structure validated: 11 tools
+2025-08-08 00:16:50.323 | SUCCESS  | __main__:load_kubernetes_tools:63 | Successfully loaded 11 Kubernetes tools
+2025-08-08 00:16:50.323 | INFO     | __main__:load_prometheus_tools:73 | Loading Prometheus tools...
+2025-08-08 00:16:50.323 | WARNING  | __main__:load_prometheus_tools:80 | Failed to load from environment: Can't instantiate abstract class ServiceHealthChecker without an implementation for abstract method '_arun'
+2025-08-08 00:16:50.323 | INFO     | __main__:load_prometheus_tools:81 | Falling back to default configuration
+2025-08-08 00:16:50.323 | INFO     | __main__:validate_tools_structure:38 | Validating Prometheus tools structure...
+2025-08-08 00:16:50.323 | SUCCESS  | __main__:validate_tools_structure:53 | Prometheus tools structure validated: 1 tools
+2025-08-08 00:16:50.323 | SUCCESS  | __main__:load_prometheus_tools:90 | Successfully loaded 1 Prometheus tools
+2025-08-08 00:16:50.323 | INFO     | __main__:main:242 | Combining all tools...
+2025-08-08 00:16:50.323 | INFO     | __main__:validate_tools_structure:38 | Validating Combined tools structure...
+2025-08-08 00:16:50.323 | SUCCESS  | __main__:validate_tools_structure:53 | Combined tools structure validated: 33 tools
+2025-08-08 00:16:50.323 | SUCCESS  | __main__:main:251 | Total tools loaded: 33
+2025-08-08 00:16:50.323 | INFO     | __main__:main:255 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'prometheus_query']
+2025-08-08 00:16:50.323 | INFO     | __main__:main:258 | Creating agent prompt...
+2025-08-08 00:16:50.323 | INFO     | __main__:main:260 | Agent prompt configured
+2025-08-08 00:16:50.323 | INFO     | __main__:main:264 | Memory checkpointer created
+2025-08-08 00:16:50.323 | INFO     | __main__:main:267 | Creating ReAct agent...
+2025-08-08 00:16:50.490 | SUCCESS  | __main__:main:274 | DevOps ReAct agent created successfully
+2025-08-08 00:16:50.490 | INFO     | __main__:main:285 | ==================================================
+2025-08-08 00:16:50.490 | INFO     | __main__:main:286 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-08 00:16:50.490 | INFO     | __main__:main:287 | ==================================================
+2025-08-08 00:16:55.460 | INFO     | __main__:main:319 | Received interrupt signal, shutting down...
+2025-08-08 00:16:55.460 | INFO     | __main__:main:331 | DevOps Agent shutdown complete
+2025-08-08 00:16:55.460 | INFO     | __main__:main:332 | ==================================================
+2025-08-08 00:17:00.545 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-08 00:17:00.545 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-08 00:17:00.545 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-08 00:17:00.561 | INFO     | __main__:main:129 | Starting DevOps Incident Response Agent
+2025-08-08 00:17:00.561 | INFO     | __main__:main:130 | ==================================================
+2025-08-08 00:17:00.561 | INFO     | __main__:main:133 | Creating LLM provider...
+2025-08-08 00:17:00.561 | INFO     | __main__:main:137 | Configuration settings loaded successfully
+2025-08-08 00:17:00.561 | INFO     | __main__:main:143 | All required settings are present
+2025-08-08 00:17:00.561 | INFO     | __main__:main:149 | Environment: development
+2025-08-08 00:17:00.561 | INFO     | __main__:main:150 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-08 00:17:00.561 | INFO     | __main__:main:153 | Debug mode: False
+2025-08-08 00:17:00.561 | INFO     | __main__:main:196 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-08 00:17:00.561 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-08 00:17:00.561 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-08 00:17:00.561 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-08 00:17:00.561 | INFO     | __main__:main:203 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-08 00:17:01.055 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-08 00:17:01.055 | INFO     | __main__:main:212 | Model instance retrieved successfully
+2025-08-08 00:17:01.055 | INFO     | __main__:main:218 | Loading tools...
+2025-08-08 00:17:01.055 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-08 00:17:01.055 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-08 00:17:01.055 | INFO     | __main__:main:227 | Successfully loaded 21 GitHub tools
+2025-08-08 00:17:01.055 | INFO     | __main__:load_kubernetes_tools:59 | Loading Kubernetes tools...
+2025-08-08 00:17:01.055 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-08 00:17:01.055 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-08 00:17:01.134 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-08 00:17:01.134 | INFO     | __main__:validate_tools_structure:38 | Validating Kubernetes tools structure...
+2025-08-08 00:17:01.134 | SUCCESS  | __main__:validate_tools_structure:53 | Kubernetes tools structure validated: 11 tools
+2025-08-08 00:17:01.134 | SUCCESS  | __main__:load_kubernetes_tools:63 | Successfully loaded 11 Kubernetes tools
+2025-08-08 00:17:01.134 | INFO     | __main__:load_prometheus_tools:73 | Loading Prometheus tools...
+2025-08-08 00:17:01.134 | WARNING  | __main__:load_prometheus_tools:80 | Failed to load from environment: Can't instantiate abstract class ServiceHealthChecker without an implementation for abstract method '_arun'
+2025-08-08 00:17:01.134 | INFO     | __main__:load_prometheus_tools:81 | Falling back to default configuration
+2025-08-08 00:17:01.134 | INFO     | __main__:validate_tools_structure:38 | Validating Prometheus tools structure...
+2025-08-08 00:17:01.134 | SUCCESS  | __main__:validate_tools_structure:53 | Prometheus tools structure validated: 1 tools
+2025-08-08 00:17:01.134 | SUCCESS  | __main__:load_prometheus_tools:90 | Successfully loaded 1 Prometheus tools
+2025-08-08 00:17:01.134 | INFO     | __main__:main:242 | Combining all tools...
+2025-08-08 00:17:01.134 | INFO     | __main__:validate_tools_structure:38 | Validating Combined tools structure...
+2025-08-08 00:17:01.134 | SUCCESS  | __main__:validate_tools_structure:53 | Combined tools structure validated: 33 tools
+2025-08-08 00:17:01.134 | SUCCESS  | __main__:main:251 | Total tools loaded: 33
+2025-08-08 00:17:01.134 | INFO     | __main__:main:255 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'prometheus_query']
+2025-08-08 00:17:01.134 | INFO     | __main__:main:258 | Creating agent prompt...
+2025-08-08 00:17:01.134 | INFO     | __main__:main:260 | Agent prompt configured
+2025-08-08 00:17:01.134 | INFO     | __main__:main:264 | Memory checkpointer created
+2025-08-08 00:17:01.134 | INFO     | __main__:main:267 | Creating ReAct agent...
+2025-08-08 00:17:01.309 | SUCCESS  | __main__:main:274 | DevOps ReAct agent created successfully
+2025-08-08 00:17:01.310 | INFO     | __main__:main:285 | ==================================================
+2025-08-08 00:17:01.310 | INFO     | __main__:main:286 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-08 00:17:01.310 | INFO     | __main__:main:287 | ==================================================
+2025-08-08 00:17:26.531 | INFO     | __main__:main:300 | Processing user input: List the capabilities of the prometheus tools that you have
+2025-08-08 00:17:46.411 | INFO     | __main__:main:300 | Processing user input: check if there are any services running
+2025-08-08 00:17:52.659 | INFO     | __main__:main:319 | Received interrupt signal, shutting down...
+2025-08-08 00:17:52.660 | INFO     | __main__:main:331 | DevOps Agent shutdown complete
+2025-08-08 00:17:52.660 | INFO     | __main__:main:332 | ==================================================

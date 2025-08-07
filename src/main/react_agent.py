@@ -1,13 +1,25 @@
+#!/usr/bin/env python3
+"""
+DevOps Incident Response Agent - Main Script
+This script initializes and runs the ReAct agent with all required tools.
+"""
+
 import os
 import sys
-from typing import Dict, Any
+from pathlib import Path
+from typing import List, Optional
+from dotenv import load_dotenv
+from loguru import logger
+from langgraph.prebuilt import create_react_agent
+from langgraph.checkpoint.memory import MemorySaver
+
+from src.utils.logging_config import setup_logging_from_env
+from src.config.settings import Settings
 
 from llms.factory import LLMFactory, LLMType
 from llms.base import ModelConfig, LLMProviderError
-from langgraph.prebuilt import create_react_agent
-
-from tools.github.factory import GitHubToolset
 from src.utils.logging_config import setup_logging_from_env, get_logger
+
 from src.config.settings import (
     get_settings,
     validate_settings,
@@ -15,19 +27,111 @@ from src.config.settings import (
     get_github_config,
 )
 
-# Setup logging first
-setup_logging_from_env()
-logger = get_logger(__name__)
+from tools.github.factory import GitHubToolset
+from tools.kubernetes.factory import KubernetesToolset
+from tools.prometheus.factory import PrometheusToolBuilder,PrometheusToolsetFactory
+
+load_dotenv()
+
+def validate_tools_structure(tools: List, source_name: str) -> None:
+    """Validate that tools is a flat list of tool instances, not nested lists."""
+    logger.info(f"Validating {source_name} tools structure...")
+    
+    if not isinstance(tools, list):
+        raise ValueError(f"{source_name} tools must be a list, got {type(tools)}")
+    
+    for i, tool in enumerate(tools):
+        if isinstance(tool, list):
+            raise ValueError(
+                f"{source_name} tool at index {i} is a list, not a tool instance. "
+                f"This suggests improper tool collection - use extend() not append()."
+            )
+        
+        if not hasattr(tool, 'name'):
+            logger.warning(f"{source_name} tool at index {i} missing 'name' attribute")
+    
+    logger.success(f"{source_name} tools structure validated: {len(tools)} tools")
+
+
+def load_kubernetes_tools() -> List:
+    """Load and return Kubernetes tools."""
+    try:
+        logger.info("Loading Kubernetes tools...")
+        k8s_toolset = KubernetesToolset.from_env()
+        k8s_tools = k8s_toolset.tools
+        validate_tools_structure(k8s_tools, "Kubernetes")
+        logger.success(f"Successfully loaded {len(k8s_tools)} Kubernetes tools")
+        return k8s_tools
+    except Exception as e:
+        logger.error(f"Failed to load Kubernetes tools: {e}")
+        return []
+
+
+def load_prometheus_tools() -> List:
+    """Load and return Prometheus tools."""
+    try:
+        logger.info("Loading Prometheus tools...")
+        
+        # Try to load from environment variables first
+        try:
+            prometheus_tool = PrometheusToolsetFactory.create_toolset_from_env()
+            logger.info("Loaded Prometheus tool from environment variables")
+        except Exception as env_error:
+            logger.warning(f"Failed to load from environment: {env_error}")
+            logger.info("Falling back to default configuration")
+            # Fallback to default configuration
+            prometheus_tool = PrometheusToolBuilder.create_tool(
+                prometheus_url="http://localhost:9090"
+            )
+        
+        prometheus_tools = [prometheus_tool]  # Wrap single tool in list
+        
+        validate_tools_structure(prometheus_tools, "Prometheus")
+        logger.success(f"Successfully loaded {len(prometheus_tools)} Prometheus tools")
+        logger.debug(f"Prometheus tool name: {prometheus_tool.name}")
+        return prometheus_tools
+    except Exception as e:
+        logger.error(f"Failed to load Prometheus tools: {e}")
+        return []
+
+
+def create_agent_prompt() -> str:
+    """Create the system prompt for the DevOps agent."""
+    return """You are a DevOps Incident Response Agent. Your role is to help diagnose, troubleshoot, and resolve infrastructure and application issues.
+
+Available Tools:
+- GitHub tools: For repository management, issue tracking, and code analysis
+- Kubernetes tools: For container orchestration, pod management, and cluster operations
+- Prometheus tools: For metrics collection, monitoring, and alerting
+
+Guidelines:
+1. Always gather information before taking action
+2. Use appropriate tools based on the incident type
+3. Provide clear explanations for your actions
+4. Suggest preventive measures when applicable
+5. Document your findings and solutions
+
+When responding to incidents:
+1. Assess the situation using monitoring tools
+2. Identify affected components
+3. Implement appropriate remediation steps
+4. Verify the resolution
+5. Provide a summary of actions taken
+
+Be helpful, thorough, and prioritize system stability and security."""
 
 
 def main():
-    """Main function to run the DevOps agent with comprehensive logging."""
-
-    logger.info("Starting DevOps Incident Response Agent")
-    logger.info("=" * 50)
-
+    """Main function to initialize and run the DevOps agent."""
     try:
-        # Load and validate settings using Pydantic
+        # Setup logging
+        setup_logging_from_env()
+        logger.info("Starting DevOps Incident Response Agent")
+        logger.info("=" * 50)
+        
+        # Create LLM provider and model
+        logger.info("Creating LLM provider...")
+        
         logger.debug("Loading configuration settings")
         settings = get_settings()
         logger.info("Configuration settings loaded successfully")
@@ -93,7 +197,6 @@ def main():
             f"LLM configuration created for {provider_type.value} model: {zlm_config.model_name}"
         )
 
-        # Create LLM provider
         logger.debug(f"Creating LLM provider for type: {provider_type.value}")
         try:
             glm_provider = LLMFactory.create_provider(provider_type, config=zlm_config)
@@ -110,8 +213,10 @@ def main():
         except Exception as e:
             logger.error(f"Failed to get model instance: {e}")
             raise
-
-        # Initialize GitHub toolset
+        
+        # Load all tools
+        logger.info("Loading tools...")
+        
         logger.debug("Initializing GitHub toolset")
         try:
             github_config = get_github_config()
@@ -120,115 +225,115 @@ def main():
             )
             github_tools = github_toolset.tools
             logger.info(f"Successfully loaded {len(github_tools)} GitHub tools")
-            logger.debug(f"Available tools: {[tool.name for tool in github_tools]}")
+            logger.debug(f"Available GitHub tools: {[tool.name for tool in github_tools]}")
         except Exception as e:
             logger.error(f"Failed to initialize GitHub toolset: {e}")
             raise
-
-        # Define agent prompt
-        logger.debug("Setting up agent prompt")
-        agent_prompt = """
-You are an expert DevOps and Incident Response agent.
-Your primary goal is to help users diagnose and resolve issues by interacting with GitHub.
-
-You have access to a suite of tools that can:
-- List repositories, commits, pull requests, and issues.
-- Read the content of files in a repository.
-- Check the status of GitHub Actions workflows.
-- Create new issues and pull requests.
-- Trigger and cancel workflows.
-
-When a user asks a question, break it down into steps.
-For each step, decide which tool is the most appropriate to use.
-Execute the tool, observe the result, and use that information to decide the next step.
-Continue this process until you have enough information to answer the user's question.
-"""
+        
+        # Load Kubernetes tools
+        k8s_tools = load_kubernetes_tools()
+        
+        # Load Prometheus tools - FIXED: Use the function instead of direct builder
+        prometheus_tools = load_prometheus_tools()  # This returns a list
+        
+        logger.debug(f"Prometheus tools loaded: {[tool.name for tool in prometheus_tools]}")
+        
+        # Combine all tools into a flat list
+        logger.info("Combining all tools...")
+        all_tools = []
+        all_tools.extend(github_tools)     
+        all_tools.extend(k8s_tools)         
+        all_tools.extend(prometheus_tools)  # Now this works correctly
+        
+        # Final validation of combined tools
+        validate_tools_structure(all_tools, "Combined")
+        
+        logger.success(f"Total tools loaded: {len(all_tools)}")
+        
+        # Log tool names for verification
+        tool_names = [getattr(tool, 'name', 'Unknown') for tool in all_tools]
+        logger.info(f"Tool names: {tool_names}")
+        
+        # Create agent prompt
+        logger.info("Creating agent prompt...")
+        prompt = create_agent_prompt()
         logger.info("Agent prompt configured")
-
-        # Create the ReAct agent
-        logger.debug("Creating ReAct agent")
-        try:
-            devops_agent = create_react_agent(
-                model=model, tools=github_tools, prompt=agent_prompt
-            )
-            logger.info("ReAct agent created successfully")
-        except Exception as e:
-            logger.error(f"Failed to create ReAct agent: {e}")
-            raise
-
-        # Main interaction loop
-        logger.info("Starting agent interaction loop")
-        logger.info("Type 'quit' to exit the agent")
-        logger.info("-" * 50)
-
-        session_count = 0
+        
+        # Create memory checkpointer
+        checkpointer = MemorySaver()
+        logger.info("Memory checkpointer created")
+        
+        # Create ReAct agent
+        logger.info("Creating ReAct agent...")
+        devops_agent = create_react_agent(
+            model=model,
+            tools=all_tools,
+            prompt=prompt,
+            checkpointer=checkpointer
+        )
+        logger.success("DevOps ReAct agent created successfully")
+        
+        # Configure agent
+        config = {
+            "configurable": {
+                "thread_id": "devops-agent-main",
+                "checkpoint_id": None,
+            }
+        }
+        
+        # Interactive loop
+        logger.info("=" * 50)
+        logger.info("DevOps Agent is ready! Type 'quit' or 'exit' to stop.")
+        logger.info("=" * 50)
+        
         while True:
             try:
-                session_count += 1
-                logger.info(f"Session {session_count}: Waiting for user input")
-
-                query = input("Hey what is up : ").strip()
-
-                if not query:
-                    logger.warning("Empty query received, continuing...")
-                    continue
-
-                if query.lower() == "quit":
-                    logger.info("User requested to quit the agent")
+                user_input = input("\n🔧 DevOps Agent > ").strip()
+                
+                if user_input.lower() in ['quit', 'exit', 'q']:
+                    logger.info("Shutting down DevOps Agent...")
                     break
-
-                logger.info(
-                    f"Processing query: {query}{'...' if len(query) > 100 else ''}"
+                
+                if not user_input:
+                    continue
+                
+                logger.info(f"Processing user input: {user_input}")
+                
+                # Get agent response
+                response = devops_agent.invoke(
+                    {"messages": [{"role": "user", "content": user_input}]},
+                    config=config
                 )
-                logger.debug(f"Full query: {query}")
-
-                # Invoke agent
-                logger.debug("Invoking agent with query")
-                try:
-                    response = devops_agent.invoke({"messages": [("user", query)]})
-                    logger.info("Agent response generated successfully")
-
-                    # Extract final response
-                    final_response = response["messages"][-1].content
-                    logger.debug(
-                        f"Final response length: {len(final_response)} characters"
-                    )
-
-                    # Display response
-                    print("\n--- Agent's Final Response ---")
-                    print(final_response)
-                    print("-" * 50)
-
-                    logger.success(f"Session {session_count} completed successfully")
-
-                except Exception as e:
-                    logger.error(f"Error during agent invocation: {e}")
-                    logger.exception("Full traceback:")
-                    print(f"\nError: {e}")
-                    print("Please try again or contact support if the issue persists.")
-
+                
+                # Extract and display the response
+                if response and "messages" in response:
+                    last_message = response["messages"][-1]
+                    if hasattr(last_message, 'content'):
+                        print(f"\n🤖 Agent: {last_message.content}")
+                    else:
+                        print(f"\n🤖 Agent: {last_message}")
+                else:
+                    print(f"\n🤖 Agent: {response}")
+                    
             except KeyboardInterrupt:
-                logger.warning("Keyboard interrupt received")
-                print("\nInterrupted by user. Exiting...")
+                logger.info("Received interrupt signal, shutting down...")
                 break
             except Exception as e:
-                logger.error(f"Unexpected error in main loop: {e}")
-                logger.exception("Full traceback:")
-                print(f"\nUnexpected error: {e}")
-                print("Please try again or contact support if the issue persists.")
-
-        logger.info(f"Agent session ended. Total sessions processed: {session_count}")
-
+                logger.error(f"Error processing request: {e}")
+                print(f"❌ Error: {e}")
+        
     except Exception as e:
         logger.critical(f"Critical error in main function: {e}")
-        logger.exception("Full traceback:")
-        print(f"\nCritical error: {e}")
-        sys.exit(1)
-
+        logger.error("Full traceback:", exc_info=True)
+        return 1
+    
     finally:
         logger.info("DevOps Agent shutdown complete")
         logger.info("=" * 50)
+    
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    exit_code = main()
+    sys.exit(exit_code)

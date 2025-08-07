@@ -8,110 +8,218 @@ from langchain_core.callbacks import (
     CallbackManagerForToolRun,
 )
 
+
 class GitHubAPIClient:
-    """Centralized GitHub API client with authentication."""
+    """
+    A comprehensive client for interacting with the GitHub REST API.
+
+    This client provides both synchronous and asynchronous methods for making
+    HTTP requests to GitHub's REST API v3. It handles authentication, request
+    formatting, response parsing, and error handling.
+
+    Features:
+        - Personal Access Token authentication
+        - Support for both sync and async operations
+        - Automatic JSON request/response handling
+        - Comprehensive error handling and logging
+        - Rate limiting awareness
+        - Custom base URL support (for GitHub Enterprise)
+
+    Prerequisites:
+        - Valid GitHub Personal Access Token with appropriate scopes
+        - Network connectivity to GitHub API
+        - Required permissions for the operations being performed
+
+    Authentication:
+        Uses Personal Access Token authentication. The token should have
+        the necessary scopes for the operations you want to perform:
+        - repo: Full access to repositories
+        - workflow: Access to GitHub Actions
+        - admin:org: Organization administration
+        - user: User profile and email access
+
+    Rate Limiting:
+        GitHub API has rate limits. This client respects these limits
+        and will return appropriate error messages when limits are exceeded.
+
+    Example Usage:
+        ```python
+        # Initialize with token
+        client = GitHubAPIClient(token="ghp_your_token_here")
+
+        # Make a GET request
+        repos = client.make_request("GET", "user/repos")
+
+        # Make a POST request with data
+        new_issue = client.make_request("POST", "repos/owner/repo/issues", {
+            "title": "Bug report",
+            "body": "Description of the bug"
+        })
+
+        # Async request
+        async def get_user():
+            return await client.make_async_request("GET", "user")
+        ```
+    """
 
     def __init__(self, token: str, base_url: str = "https://api.github.com"):
+        """
+        Initialize the GitHub API client.
+
+        Args:
+            token (str): GitHub Personal Access Token for authentication.
+                        Must have appropriate scopes for the operations you need.
+            base_url (str): Base URL for the GitHub API.
+                           Defaults to "https://api.github.com" for GitHub.com.
+                           Use custom URL for GitHub Enterprise instances.
+
+        Raises:
+            ValueError: If token is empty or invalid.
+
+        Example:
+            ```python
+            # GitHub.com
+            client = GitHubAPIClient("ghp_your_token_here")
+
+            # GitHub Enterprise
+            client = GitHubAPIClient(
+                "ghp_your_token_here",
+                "https://github.yourcompany.com/api/v3"
+            )
+            ```
+        """
         self.token = token
-        self.base_url = base_url
+        self.base_url = base_url.rstrip("/")
         self.headers = {
             "Authorization": f"token {token}",
             "Accept": "application/vnd.github.v3+json",
-            "Content-Type": "application/json",
+            "User-Agent": "DevOps-Agent/1.0",
         }
 
     def make_request(
         self, method: str, endpoint: str, data: Dict[Any, Any] = None
     ) -> Dict[Any, Any]:
-        """Make synchronous HTTP request to GitHub API."""
+        """
+        Make a synchronous HTTP request to the GitHub API.
+
+        This method handles the complete request lifecycle including authentication,
+        request formatting, response parsing, and error handling.
+
+        Args:
+            method (str): HTTP method (GET, POST, PUT, DELETE, PATCH).
+            endpoint (str): API endpoint path (e.g., "user/repos", "repos/owner/repo/issues").
+                          Should not include the base URL or leading slash.
+            data (Dict[Any, Any], optional): Request payload for POST/PUT/PATCH requests.
+                                           Will be automatically converted to JSON.
+
+        Returns:
+            Dict[Any, Any]: Parsed JSON response from the GitHub API.
+                           For successful requests, contains the API response data.
+                           For errors, contains error details.
+
+        Raises:
+            requests.RequestException: For network or HTTP errors.
+            ValueError: For invalid request parameters.
+            KeyError: For malformed API responses.
+
+        Example:
+            ```python
+            # Get user repositories
+            repos = client.make_request("GET", "user/repos")
+
+            # Create an issue
+            issue = client.make_request("POST", "repos/owner/repo/issues", {
+                "title": "New feature request",
+                "body": "Please add support for..."
+            })
+
+            # Update repository settings
+            client.make_request("PATCH", "repos/owner/repo", {
+                "description": "Updated description"
+            })
+            ```
+        """
+        import requests
+
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
 
         try:
-            if method.upper() == "GET":
-                response = requests.get(url, headers=self.headers, params=data)
-            elif method.upper() == "POST":
-                response = requests.post(url, headers=self.headers, json=data)
-            elif method.upper() == "PATCH":
-                response = requests.patch(url, headers=self.headers, json=data)
-            elif method.upper() == "PUT":
-                response = requests.put(url, headers=self.headers, json=data)
-            elif method.upper() == "DELETE":
-                response = requests.delete(url, headers=self.headers)
+            if method.upper() in ["POST", "PUT", "PATCH"] and data:
+                response = requests.request(
+                    method, url, headers=self.headers, json=data
+                )
             else:
-                return {"error": f"Unsupported HTTP method: {method}"}
+                response = requests.request(method, url, headers=self.headers)
 
             response.raise_for_status()
-            return response.json() if response.content else {"status": "success"}
+            return response.json()
 
         except requests.exceptions.RequestException as e:
-            return {
-                "error": str(e),
-                "status_code": getattr(e.response, "status_code", None),
-            }
+            return {"error": f"Request failed: {str(e)}"}
+        except ValueError as e:
+            return {"error": f"Invalid response format: {str(e)}"}
 
     async def make_async_request(
         self, method: str, endpoint: str, data: Dict[Any, Any] = None
     ) -> Dict[Any, Any]:
-        """Make asynchronous HTTP request to GitHub API."""
+        """
+        Make an asynchronous HTTP request to the GitHub API.
+
+        This method provides the same functionality as make_request but operates
+        asynchronously, allowing for non-blocking API calls in async contexts.
+
+        Args:
+            method (str): HTTP method (GET, POST, PUT, DELETE, PATCH).
+            endpoint (str): API endpoint path (e.g., "user/repos", "repos/owner/repo/issues").
+                          Should not include the base URL or leading slash.
+            data (Dict[Any, Any], optional): Request payload for POST/PUT/PATCH requests.
+                                           Will be automatically converted to JSON.
+
+        Returns:
+            Dict[Any, Any]: Parsed JSON response from the GitHub API.
+                           For successful requests, contains the API response data.
+                           For errors, contains error details.
+
+        Raises:
+            aiohttp.ClientError: For network or HTTP errors.
+            ValueError: For invalid request parameters.
+            KeyError: For malformed API responses.
+
+        Example:
+            ```python
+            async def get_user_data():
+                return await client.make_async_request("GET", "user")
+
+            async def create_issue():
+                return await client.make_async_request("POST", "repos/owner/repo/issues", {
+                    "title": "Async issue creation",
+                    "body": "Created via async request"
+                })
+            ```
+        """
+        import aiohttp
+
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
 
         try:
             async with aiohttp.ClientSession() as session:
-                if method.upper() == "GET":
-                    async with session.get(
-                        url, headers=self.headers, params=data
+                if method.upper() in ["POST", "PUT", "PATCH"] and data:
+                    async with session.request(
+                        method, url, headers=self.headers, json=data
                     ) as response:
                         response.raise_for_status()
-                        result = (
-                            await response.json()
-                            if response.content_length
-                            else {"status": "success"}
-                        )
-                elif method.upper() == "POST":
-                    async with session.post(
-                        url, headers=self.headers, json=data
-                    ) as response:
-                        response.raise_for_status()
-                        result = (
-                            await response.json()
-                            if response.content_length
-                            else {"status": "success"}
-                        )
-                elif method.upper() == "PATCH":
-                    async with session.patch(
-                        url, headers=self.headers, json=data
-                    ) as response:
-                        response.raise_for_status()
-                        result = (
-                            await response.json()
-                            if response.content_length
-                            else {"status": "success"}
-                        )
-                elif method.upper() == "PUT":
-                    async with session.put(
-                        url, headers=self.headers, json=data
-                    ) as response:
-                        response.raise_for_status()
-                        result = (
-                            await response.json()
-                            if response.content_length
-                            else {"status": "success"}
-                        )
-                elif method.upper() == "DELETE":
-                    async with session.delete(url, headers=self.headers) as response:
-                        response.raise_for_status()
-                        result = (
-                            {"status": "success"}
-                            if response.status == 204
-                            else await response.json()
-                        )
+                        return await response.json()
                 else:
-                    return {"error": f"Unsupported HTTP method: {method}"}
+                    async with session.request(
+                        method, url, headers=self.headers
+                    ) as response:
+                        response.raise_for_status()
+                        return await response.json()
 
-                return result
-
-        except Exception as e:
-            return {"error": str(e)}
+        except aiohttp.ClientError as e:
+            return {"error": f"Async request failed: {str(e)}"}
+        except ValueError as e:
+            return {"error": f"Invalid response format: {str(e)}"}
 
 
 # ============= REPOSITORY MANAGEMENT TOOLS =============
@@ -127,6 +235,70 @@ class ListRepositoriesInput(BaseModel):
 
 
 class ListRepositoriesTool(AbstractTool):
+    """
+    A LangChain tool for listing GitHub repositories for a user or organization.
+
+    This tool provides comprehensive repository listing functionality with various
+    filtering options and pagination support. It can list repositories for both
+    individual users and organizations.
+
+    Features:
+        - List repositories for users or organizations
+        - Filter by repository type (all, owner, public, private, member)
+        - Pagination support with configurable page size
+        - Automatic sorting by last updated
+        - Support for both sync and async operations
+
+    Repository Types:
+        - all: All repositories the user has access to
+        - owner: Repositories owned by the user/organization
+        - public: Public repositories
+        - private: Private repositories (requires appropriate permissions)
+        - member: Repositories where the user is a member
+
+    Prerequisites:
+        - Valid GitHub Personal Access Token
+        - Appropriate permissions for the repository types being accessed
+        - Access to the specified user/organization
+
+    Example Usage:
+        ```python
+        # List all repositories for a user
+        tool = ListRepositoriesTool(github_client=client)
+        result = tool.run({"owner": "octocat"})
+
+        # List only public repositories
+        result = tool.run({
+            "owner": "microsoft",
+            "repo_type": "public",
+            "per_page": 50
+        })
+
+        # List private repositories (requires appropriate permissions)
+        result = tool.run({
+            "owner": "myorg",
+            "repo_type": "private"
+        })
+        ```
+
+    Output Format:
+        Returns a list of repository objects containing:
+        - Repository name and full name
+        - Description and homepage URL
+        - Visibility (public/private)
+        - Language and topics
+        - Star and fork counts
+        - Last updated timestamp
+        - Default branch information
+
+    Error Handling:
+        - Authentication errors (401)
+        - Permission errors (403)
+        - Not found errors (404)
+        - Rate limiting errors (429)
+        - Network connectivity issues
+    """
+
     name: str = "list_repositories"
     description: str = "List repositories for a user or organization"
     args_schema: Type[BaseModel] = ListRepositoriesInput
@@ -139,6 +311,25 @@ class ListRepositoriesTool(AbstractTool):
         per_page: int = 30,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ):
+        """
+        Synchronously list repositories for a GitHub user or organization.
+
+        Args:
+            owner (str): GitHub username or organization name.
+                       Examples: "octocat", "microsoft", "myorg"
+            repo_type (str): Type of repositories to list.
+                           Options: "all", "owner", "public", "private", "member"
+            per_page (int): Number of repositories per page (1-100).
+                          Default: 30, Maximum: 100
+            run_manager (Optional[CallbackManagerForToolRun]): LangChain callback manager.
+
+        Returns:
+            Dict[Any, Any]: JSON response containing repository information.
+                           Includes repository list and pagination metadata.
+
+        Raises:
+            Exception: For API errors, authentication issues, or network problems.
+        """
         endpoint = f"users/{owner}/repos"
         params = {"type": repo_type, "per_page": per_page, "sort": "updated"}
         return self.github_client.make_request("GET", endpoint, params)
@@ -150,6 +341,25 @@ class ListRepositoriesTool(AbstractTool):
         per_page: int = 30,
         run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
     ):
+        """
+        Asynchronously list repositories for a GitHub user or organization.
+
+        Args:
+            owner (str): GitHub username or organization name.
+                       Examples: "octocat", "microsoft", "myorg"
+            repo_type (str): Type of repositories to list.
+                           Options: "all", "owner", "public", "private", "member"
+            per_page (int): Number of repositories per page (1-100).
+                          Default: 30, Maximum: 100
+            run_manager (Optional[AsyncCallbackManagerForToolRun]): LangChain async callback manager.
+
+        Returns:
+            Dict[Any, Any]: JSON response containing repository information.
+                           Same format as synchronous version.
+
+        Raises:
+            Exception: For API errors, authentication issues, or network problems.
+        """
         endpoint = f"users/{owner}/repos"
         params = {"type": repo_type, "per_page": per_page, "sort": "updated"}
         return await self.github_client.make_async_request("GET", endpoint, params)
@@ -161,6 +371,65 @@ class GetRepositoryInput(BaseModel):
 
 
 class GetRepositoryTool(AbstractTool):
+    """
+    A LangChain tool for retrieving detailed information about a specific GitHub repository.
+
+    This tool provides comprehensive repository information including metadata,
+    statistics, configuration, and status details. It's useful for getting
+    complete repository profiles and checking repository health.
+
+    Features:
+        - Get detailed repository information
+        - Access repository statistics and metrics
+        - Retrieve repository configuration and settings
+        - Check repository status and health
+        - Support for both sync and async operations
+
+    Information Retrieved:
+        - Basic repository details (name, description, homepage)
+        - Repository statistics (stars, forks, watchers, issues)
+        - Configuration (default branch, topics, language)
+        - Status information (archived, disabled, private/public)
+        - Network information (parent, source, template)
+        - Security settings (vulnerability alerts, security policy)
+
+    Prerequisites:
+        - Valid GitHub Personal Access Token
+        - Access to the specified repository
+        - Appropriate permissions for private repositories
+
+    Example Usage:
+        ```python
+        # Get repository information
+        tool = GetRepositoryTool(github_client=client)
+        result = tool.run({
+            "owner": "microsoft",
+            "repo": "vscode"
+        })
+
+        # Get private repository (requires access)
+        result = tool.run({
+            "owner": "myorg",
+            "repo": "private-repo"
+        })
+        ```
+
+    Output Format:
+        Returns a detailed repository object containing:
+        - Repository metadata (id, name, full_name, description)
+        - Statistics (stargazers_count, forks_count, open_issues_count)
+        - Configuration (default_branch, topics, language, license)
+        - Status flags (archived, disabled, private, fork)
+        - URLs (html_url, clone_url, ssh_url)
+        - Timestamps (created_at, updated_at, pushed_at)
+
+    Error Handling:
+        - Repository not found (404)
+        - Access denied (403)
+        - Authentication errors (401)
+        - Network connectivity issues
+    """
+
     name: str = "get_repository"
     description: str = "Get detailed information about a specific repository"
     args_schema: Type[BaseModel] = GetRepositoryInput
@@ -172,6 +441,23 @@ class GetRepositoryTool(AbstractTool):
         repo: str,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ):
+        """
+        Synchronously get detailed information about a GitHub repository.
+
+        Args:
+            owner (str): Repository owner username or organization name.
+                       Examples: "microsoft", "octocat", "myorg"
+            repo (str): Repository name.
+                      Examples: "vscode", "Hello-World", "my-project"
+            run_manager (Optional[CallbackManagerForToolRun]): LangChain callback manager.
+
+        Returns:
+            Dict[Any, Any]: JSON response containing detailed repository information.
+                           Includes all repository metadata, statistics, and configuration.
+
+        Raises:
+            Exception: For API errors, authentication issues, or network problems.
+        """
         endpoint = f"repos/{owner}/{repo}"
         return self.github_client.make_request("GET", endpoint)
 
@@ -181,6 +467,23 @@ class GetRepositoryTool(AbstractTool):
         repo: str,
         run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
     ):
+        """
+        Asynchronously get detailed information about a GitHub repository.
+
+        Args:
+            owner (str): Repository owner username or organization name.
+                       Examples: "microsoft", "octocat", "myorg"
+            repo (str): Repository name.
+                      Examples: "vscode", "Hello-World", "my-project"
+            run_manager (Optional[AsyncCallbackManagerForToolRun]): LangChain async callback manager.
+
+        Returns:
+            Dict[Any, Any]: JSON response containing detailed repository information.
+                           Same format as synchronous version.
+
+        Raises:
+            Exception: For API errors, authentication issues, or network problems.
+        """
         endpoint = f"repos/{owner}/{repo}"
         return await self.github_client.make_async_request("GET", endpoint)
 
@@ -198,6 +501,87 @@ class ListIssuesInput(BaseModel):
 
 
 class ListIssuesTool(AbstractTool):
+    """
+    A LangChain tool for listing and filtering issues in a GitHub repository.
+
+    This tool provides comprehensive issue listing functionality with multiple
+    filtering options, making it easy to find specific issues based on various
+    criteria such as state, labels, assignees, and more.
+
+    Features:
+        - List issues with multiple filtering options
+        - Filter by issue state (open, closed, all)
+        - Filter by labels (comma-separated)
+        - Filter by assignee
+        - Pagination support with configurable page size
+        - Automatic sorting by last updated
+        - Support for both sync and async operations
+
+    Issue States:
+        - open: Only open issues (default)
+        - closed: Only closed issues
+        - all: Both open and closed issues
+
+    Filtering Options:
+        - Labels: Comma-separated list of label names
+        - Assignee: Specific GitHub username
+        - Per page: Number of issues to return (1-100)
+
+    Prerequisites:
+        - Valid GitHub Personal Access Token
+        - Access to the specified repository
+        - Appropriate permissions for the repository
+
+    Example Usage:
+        ```python
+        # List open issues
+        tool = ListIssuesTool(github_client=client)
+        result = tool.run({
+            "owner": "microsoft",
+            "repo": "vscode"
+        })
+
+        # List issues with specific labels
+        result = tool.run({
+            "owner": "microsoft",
+            "repo": "vscode",
+            "labels": "bug,help wanted",
+            "state": "open"
+        })
+
+        # List issues assigned to specific user
+        result = tool.run({
+            "owner": "microsoft",
+            "repo": "vscode",
+            "assignee": "username",
+            "per_page": 50
+        })
+
+        # List all issues (open and closed)
+        result = tool.run({
+            "owner": "microsoft",
+            "repo": "vscode",
+            "state": "all"
+        })
+        ```
+
+    Output Format:
+        Returns a list of issue objects containing:
+        - Issue number and title
+        - Issue state and labels
+        - Assignee and milestone information
+        - Creation and update timestamps
+        - Issue body and comments count
+        - Repository and user references
+
+    Error Handling:
+        - Repository not found (404)
+        - Access denied (403)
+        - Authentication errors (401)
+        - Invalid filter parameters
+        - Network connectivity issues
+    """
+
     name: str = "list_issues"
     description: str = "List issues in a repository with filtering options"
     args_schema: Type[BaseModel] = ListIssuesInput
@@ -213,6 +597,31 @@ class ListIssuesTool(AbstractTool):
         per_page: int = 30,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ):
+        """
+        Synchronously list issues in a GitHub repository with filtering options.
+
+        Args:
+            owner (str): Repository owner username or organization name.
+                       Examples: "microsoft", "octocat", "myorg"
+            repo (str): Repository name.
+                      Examples: "vscode", "Hello-World", "my-project"
+            state (str): Issue state filter.
+                       Options: "open" (default), "closed", "all"
+            labels (str): Comma-separated list of label names to filter by.
+                        Examples: "bug", "bug,help wanted", "enhancement,good first issue"
+            assignee (str): GitHub username to filter by assignee.
+                          Examples: "username", "octocat"
+            per_page (int): Number of issues per page (1-100).
+                          Default: 30, Maximum: 100
+            run_manager (Optional[CallbackManagerForToolRun]): LangChain callback manager.
+
+        Returns:
+            Dict[Any, Any]: JSON response containing filtered issue list.
+                           Includes issues matching the specified criteria.
+
+        Raises:
+            Exception: For API errors, authentication issues, or network problems.
+        """
         endpoint = f"repos/{owner}/{repo}/issues"
         params = {"state": state, "per_page": per_page, "sort": "updated"}
         if labels:
@@ -231,6 +640,31 @@ class ListIssuesTool(AbstractTool):
         per_page: int = 30,
         run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
     ):
+        """
+        Asynchronously list issues in a GitHub repository with filtering options.
+
+        Args:
+            owner (str): Repository owner username or organization name.
+                       Examples: "microsoft", "octocat", "myorg"
+            repo (str): Repository name.
+                      Examples: "vscode", "Hello-World", "my-project"
+            state (str): Issue state filter.
+                       Options: "open" (default), "closed", "all"
+            labels (str): Comma-separated list of label names to filter by.
+                        Examples: "bug", "bug,help wanted", "enhancement,good first issue"
+            assignee (str): GitHub username to filter by assignee.
+                          Examples: "username", "octocat"
+            per_page (int): Number of issues per page (1-100).
+                          Default: 30, Maximum: 100
+            run_manager (Optional[AsyncCallbackManagerForToolRun]): LangChain async callback manager.
+
+        Returns:
+            Dict[Any, Any]: JSON response containing filtered issue list.
+                           Same format as synchronous version.
+
+        Raises:
+            Exception: For API errors, authentication issues, or network problems.
+        """
         endpoint = f"repos/{owner}/{repo}/issues"
         params = {"state": state, "per_page": per_page, "sort": "updated"}
         if labels:

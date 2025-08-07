@@ -9,3 +9,46 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     restart: always
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+  
+
+  # --- Loki for Log Aggregation ---
+  loki:
+    image: grafana/loki:2.9.2
+    container_name: loki
+    ports:
+      - "3100:3100" # Loki API port
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - /c/Users/Raghu/Downloads/Incidence_response_agent/DevOps_Agent/tools/Loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+
+  promtail:
+    image: grafana/promtail:2.9.2
+    container_name: promtail
+    volumes:
+      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /c/Users/Raghu/Downloads/Incidence_response_agent/DevOps_Agent/tools/Loki/promtail-config.yml:/etc/promtail/config.yaml:ro
+    command: -config.file=/etc/promtail/config.yaml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - /c/Users/Raghu/Downloads/Incidence_response_agent/DevOps_Agent/tools/Loki/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yaml
+    depends_on:
+      - loki
+
+volumes:
+  jenkins_data:
+  grafana_data:

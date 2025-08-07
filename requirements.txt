@@ -7,3 +7,6 @@ langchain-openai
 langgraph
 python-dotenv
 llama_parse
+python-jenkins
+kubernetes
+slack_sdk

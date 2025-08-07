@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastmcp>=2.11.1",
+    "kubernetes>=33.1.0",
     "langchain>=0.3.27",
     "langchain-anthropic>=0.3.18",
     "langchain-cerebras>=0.5.0",
@@ -21,4 +22,6 @@ dependencies = [
     "pydantic-settings>=2.10.1",
     "pytest>=8.4.1",
     "python-dotenv>=1.1.1",
+    "python-jenkins>=1.8.3",
+    "slack-sdk>=3.36.0",
 ]
