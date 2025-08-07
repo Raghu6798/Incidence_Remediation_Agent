@@ -1,10 +1,11 @@
 import os
+import asyncio
 from typing import List, Optional, Dict, Any,Type
 from datetime import datetime, timedelta
 
 from tools.prometheus.prometheus_tool import PrometheusTool,PrometheusToolBuilder,CommonQueries
 from tools.base import AbstractTool, ToolInputSchema
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field , PrivateAttr
 
 
 class ServiceHealthCheckSchema(ToolInputSchema):
@@ -53,10 +54,10 @@ class ServiceHealthChecker(AbstractTool):
     - Identifying service outages or degradation
     """
     args_schema :Type[BaseModel] = ServiceHealthCheckSchema
-    
+    _prometheus_tool: PrometheusTool = PrivateAttr()
     def __init__(self, prometheus_tool: PrometheusTool):
         super().__init__()
-        self.prometheus_tool = prometheus_tool
+     
     
     def _run(self, service_name: str, time_range: str = "5m", **kwargs) -> str:
         """Check service health."""
@@ -100,6 +101,8 @@ Time Range: {time_range}
 """
         except Exception as e:
             return f"Error checking service health for {service_name}: {str(e)}"
+    async def _arun(self, service_name: str, time_range: str = "5m", **kwargs) -> str:
+        return await asyncio.to_thread(self._run,self, service_name = service_name, time_range = time_range, **kwargs)
 
 
 class PerformanceAnalyzer(AbstractTool):
@@ -115,10 +118,10 @@ class PerformanceAnalyzer(AbstractTool):
     - Resource bottleneck identification
     """
     args_schema :Type[BaseModel] = PerformanceMetricsSchema
-    
+    _prometheus_tool: PrometheusTool = PrivateAttr()
     def __init__(self, prometheus_tool: PrometheusTool):
         super().__init__()
-        self.prometheus_tool = prometheus_tool
+
     
     def _run(self, metric_type: str, instance: Optional[str] = None, time_range: str = "15m", **kwargs) -> str:
         """Analyze performance metrics."""
@@ -156,6 +159,8 @@ Time Range: {time_range}
 """
         except Exception as e:
             return f"Error analyzing {metric_type} performance: {str(e)}"
+    async def _arun(self,metric_type:str,instance:Optional[str] = None,time_range:str="15m",**kwargs) -> str:
+        return await asyncio.to_thread(self._run,metric_type=metric_type,instance=instance,time_range=time_range,**kwargs)
 
 
 class ErrorAnalyzer(AbstractTool):
@@ -171,10 +176,10 @@ class ErrorAnalyzer(AbstractTool):
     - SLA compliance checking
     """
     args_schema :Type[BaseModel] = ErrorAnalysisSchema
-    
+    _prometheus_tool: PrometheusTool = PrivateAttr()
     def __init__(self, prometheus_tool: PrometheusTool):
         super().__init__()
-        self.prometheus_tool = prometheus_tool
+     
     
     def _run(self, service_name: str, error_threshold: float = 5.0, time_range: str = "10m", **kwargs) -> str:
         """Analyze error rates and patterns."""
@@ -230,6 +235,9 @@ Error Threshold: {error_threshold}%
 """
         except Exception as e:
             return f"Error analyzing errors for {service_name}: {str(e)}"
+        
+    async def _arun(self, service_name: str, error_threshold: float = 5.0, time_range: str = "10m", **kwargs) -> str:
+        return await asyncio.to_thread(self._run, service_name = service_name, error_threshold = error_threshold, time_range=time_range, **kwargs)
 
 
 class AlertInvestigator(AbstractTool):
@@ -245,10 +253,10 @@ class AlertInvestigator(AbstractTool):
     - Historical alert patterns
     """
     args_schema :Type[BaseModel] = AlertInvestigationSchema
-    
+    _prometheus_tool: PrometheusTool = PrivateAttr()
     def __init__(self, prometheus_tool: PrometheusTool):
         super().__init__()
-        self.prometheus_tool = prometheus_tool
+      
     
     def _run(self, alert_name: Optional[str] = None, severity: Optional[str] = None, **kwargs) -> str:
         """Investigate alerts."""
@@ -287,6 +295,8 @@ Severity Filter: {severity or "All severities"}
 """
         except Exception as e:
             return f"Error investigating alerts: {str(e)}"
+    async def _arun(self, alert_name: Optional[str] = None, severity: Optional[str] = None, **kwargs) -> str:
+        return await asyncio.to_thread(self._arun,alert_name=alert_name ,severity = severity, **kwargs)
 
 
 class CustomQueryTool(AbstractTool):
@@ -302,10 +312,9 @@ class CustomQueryTool(AbstractTool):
     - Specific monitoring requirements
     """
     args_schema :Type[BaseModel] = CustomPrometheusQuerySchema
-    
+    _prometheus_tool: PrometheusTool = PrivateAttr()
     def __init__(self, prometheus_tool: PrometheusTool):
         super().__init__()
-        self.prometheus_tool = prometheus_tool
     
     def _run(self, query: str, start_time: Optional[str] = None, end_time: Optional[str] = None, step: str = "15s", **kwargs) -> str:
         """Execute custom PromQL query."""
@@ -327,6 +336,9 @@ Step: {step}
 """
         except Exception as e:
             return f"Error executing custom query: {str(e)}"
+        
+    async def _arun(self, query: str, start_time: Optional[str] = None, end_time: Optional[str] = None, step: str = "15s", **kwargs) -> str:
+        return await asyncio.to_thread(self._run, query = query, start_time = start_time, end_time = end_time, step = step, **kwargs)
 
 
 class PrometheusToolsetFactory:

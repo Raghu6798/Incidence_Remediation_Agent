@@ -72,25 +72,15 @@ def load_prometheus_tools() -> List:
     try:
         logger.info("Loading Prometheus tools...")
         
-        # Try to load from environment variables first
-        try:
-            prometheus_tool = PrometheusToolsetFactory.create_toolset_from_env()
-            logger.info("Loaded Prometheus tool from environment variables")
-        except Exception as env_error:
-            logger.warning(f"Failed to load from environment: {env_error}")
-            logger.info("Falling back to default configuration")
-            # Fallback to default configuration
-            prometheus_tool = PrometheusToolBuilder.create_tool(
-                prometheus_url="http://localhost:9090"
-            )
+        # The factory method returns a list of tools. Use one consistent name.
+        prometheus_tools = PrometheusToolsetFactory.create_toolset_from_env()
         
-        prometheus_tools = [prometheus_tool]  # Wrap single tool in list
-        
+        # Now validation will work correctly.
         validate_tools_structure(prometheus_tools, "Prometheus")
         logger.success(f"Successfully loaded {len(prometheus_tools)} Prometheus tools")
-        logger.debug(f"Prometheus tool name: {prometheus_tool.name}")
         return prometheus_tools
     except Exception as e:
+        # If anything goes wrong during loading, log it and return an empty list.
         logger.error(f"Failed to load Prometheus tools: {e}")
         return []
 
