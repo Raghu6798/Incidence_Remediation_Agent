@@ -8,8 +8,6 @@ from langchain_core.callbacks import (
     CallbackManagerForToolRun,
 )
 
-
-# This class is unchanged
 class GitHubAPIClient:
     """Centralized GitHub API client with authentication."""
 

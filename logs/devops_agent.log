@@ -1,0 +1,85 @@
+2025-08-06 22:21:59.406 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-06 22:21:59.408 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-06 22:21:59.408 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-06 22:21:59.408 | INFO     | __main__:main:20 | Starting DevOps Incident Response Agent
+2025-08-06 22:21:59.410 | INFO     | __main__:main:21 | ==================================================
+2025-08-06 22:21:59.410 | INFO     | __main__:main:27 | Configuration settings loaded successfully
+2025-08-06 22:21:59.410 | INFO     | __main__:main:33 | All required settings are present
+2025-08-06 22:21:59.410 | INFO     | __main__:main:39 | Environment: development
+2025-08-06 22:21:59.410 | INFO     | __main__:main:40 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-06 22:21:59.410 | INFO     | __main__:main:41 | Debug mode: False
+2025-08-06 22:21:59.410 | INFO     | __main__:main:82 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-06 22:21:59.410 | INFO     | llms.factory:create_provider:71 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-06 22:21:59.412 | INFO     | llms.base:_validate_environment:99 | Environment validation passed for gemini provider
+2025-08-06 22:21:59.412 | SUCCESS  | llms.factory:create_provider:75 | Successfully created gemini provider
+2025-08-06 22:21:59.412 | INFO     | __main__:main:88 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-06 22:22:00.722 | SUCCESS  | llms.base:get_model:107 | Successfully created model instance for gemini
+2025-08-06 22:22:00.722 | INFO     | __main__:main:97 | Model instance retrieved successfully
+2025-08-06 22:22:00.722 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-06 22:22:00.723 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-06 22:22:00.723 | INFO     | __main__:main:108 | Successfully loaded 21 GitHub tools
+2025-08-06 22:22:00.723 | INFO     | __main__:main:132 | Agent prompt configured
+2025-08-06 22:22:00.793 | INFO     | __main__:main:142 | ReAct agent created successfully
+2025-08-06 22:22:00.793 | INFO     | __main__:main:148 | Starting agent interaction loop
+2025-08-06 22:22:00.793 | INFO     | __main__:main:149 | Type 'quit' to exit the agent
+2025-08-06 22:22:00.793 | INFO     | __main__:main:150 | --------------------------------------------------
+2025-08-06 22:22:00.793 | INFO     | __main__:main:156 | Session 1: Waiting for user input
+2025-08-06 22:22:22.332 | INFO     | __main__:main:168 | Processing query: Hey can you help me check this repository with the username : Raghu6798
+2025-08-06 22:22:24.486 | INFO     | __main__:main:175 | Agent response generated successfully
+2025-08-06 22:22:24.486 | SUCCESS  | __main__:main:186 | Session 1 completed successfully
+2025-08-06 22:22:24.486 | INFO     | __main__:main:156 | Session 2: Waiting for user input
+2025-08-06 22:22:38.660 | INFO     | __main__:main:168 | Processing query: Hey can you help me check this repository with the username : Raghu6798 , I want to check a list of ...
+2025-08-06 22:23:34.161 | WARNING  | __main__:main:195 | Keyboard interrupt received
+2025-08-06 22:23:34.161 | INFO     | __main__:main:204 | Agent session ended. Total sessions processed: 2
+2025-08-06 22:23:34.161 | INFO     | __main__:main:213 | DevOps Agent shutdown complete
+2025-08-06 22:23:34.161 | INFO     | __main__:main:214 | ==================================================
+2025-08-06 22:25:48.623 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-06 22:25:48.623 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-06 22:25:48.623 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-06 22:25:48.623 | INFO     | __main__:main:20 | Starting DevOps Incident Response Agent
+2025-08-06 22:25:48.623 | INFO     | __main__:main:21 | ==================================================
+2025-08-06 22:25:48.623 | INFO     | __main__:main:27 | Configuration settings loaded successfully
+2025-08-06 22:25:48.623 | INFO     | __main__:main:33 | All required settings are present
+2025-08-06 22:25:48.623 | INFO     | __main__:main:39 | Environment: development
+2025-08-06 22:25:48.623 | INFO     | __main__:main:40 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-06 22:25:48.623 | INFO     | __main__:main:41 | Debug mode: False
+2025-08-06 22:25:48.623 | INFO     | __main__:main:82 | LLM configuration created for gemini model: gemini-2.5-flash
+2025-08-06 22:25:48.623 | INFO     | llms.factory:create_provider:71 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-06 22:25:48.623 | INFO     | llms.base:_validate_environment:99 | Environment validation passed for gemini provider
+2025-08-06 22:25:48.623 | SUCCESS  | llms.factory:create_provider:75 | Successfully created gemini provider
+2025-08-06 22:25:48.623 | INFO     | __main__:main:88 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-06 22:25:49.228 | SUCCESS  | llms.base:get_model:107 | Successfully created model instance for gemini
+2025-08-06 22:25:49.228 | INFO     | __main__:main:97 | Model instance retrieved successfully
+2025-08-06 22:25:49.228 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-06 22:25:49.228 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-06 22:25:49.228 | INFO     | __main__:main:108 | Successfully loaded 21 GitHub tools
+2025-08-06 22:25:49.228 | INFO     | __main__:main:132 | Agent prompt configured
+2025-08-06 22:25:49.289 | INFO     | __main__:main:142 | ReAct agent created successfully
+2025-08-06 22:25:49.290 | INFO     | __main__:main:148 | Starting agent interaction loop
+2025-08-06 22:25:49.290 | INFO     | __main__:main:149 | Type 'quit' to exit the agent
+2025-08-06 22:25:49.290 | INFO     | __main__:main:150 | --------------------------------------------------
+2025-08-06 22:25:49.290 | INFO     | __main__:main:156 | Session 1: Waiting for user input
+2025-08-06 22:26:04.246 | INFO     | __main__:main:168 | Processing query: What are your capabilities
+2025-08-06 22:26:06.966 | INFO     | __main__:main:175 | Agent response generated successfully
+2025-08-06 22:26:06.966 | SUCCESS  | __main__:main:186 | Session 1 completed successfully
+2025-08-06 22:26:06.966 | INFO     | __main__:main:156 | Session 2: Waiting for user input
+2025-08-06 22:26:36.166 | INFO     | __main__:main:168 | Processing query: I need you to help me list of all the public repositories of this username : Raghu6798
+2025-08-06 22:26:43.578 | INFO     | __main__:main:175 | Agent response generated successfully
+2025-08-06 22:26:43.578 | SUCCESS  | __main__:main:186 | Session 2 completed successfully
+2025-08-06 22:26:43.578 | INFO     | __main__:main:156 | Session 3: Waiting for user input
+2025-08-06 22:35:59.461 | INFO     | __main__:main:168 | Processing query: Can you go through one of the repostiory , Browser_scrape_mcp repo and let me know
+2025-08-06 22:36:01.117 | INFO     | __main__:main:175 | Agent response generated successfully
+2025-08-06 22:36:01.117 | SUCCESS  | __main__:main:186 | Session 3 completed successfully
+2025-08-06 22:36:01.117 | INFO     | __main__:main:156 | Session 4: Waiting for user input
+2025-08-06 22:36:16.134 | INFO     | __main__:main:168 | Processing query: Can you go through one of the repostiory , Browser_scrape_mcp repo and let me know , Raghu6798 is the owner...
+2025-08-06 22:36:19.965 | INFO     | __main__:main:175 | Agent response generated successfully
+2025-08-06 22:36:19.967 | SUCCESS  | __main__:main:186 | Session 4 completed successfully
+2025-08-06 22:36:19.967 | INFO     | __main__:main:156 | Session 5: Waiting for user input
+2025-08-06 22:36:48.342 | INFO     | __main__:main:168 | Processing query: Can you go through one of the repostiory , Browser_scrape_mcp repo owned by Raghu6798 , what is within it...
+2025-08-06 22:36:56.732 | INFO     | __main__:main:175 | Agent response generated successfully
+2025-08-06 22:36:56.732 | SUCCESS  | __main__:main:186 | Session 5 completed successfully
+2025-08-06 22:36:56.737 | INFO     | __main__:main:156 | Session 6: Waiting for user input
+2025-08-06 22:37:54.641 | WARNING  | __main__:main:195 | Keyboard interrupt received
+2025-08-06 22:37:54.643 | INFO     | __main__:main:204 | Agent session ended. Total sessions processed: 6
+2025-08-06 22:37:54.643 | INFO     | __main__:main:213 | DevOps Agent shutdown complete
+2025-08-06 22:37:54.643 | INFO     | __main__:main:214 | ==================================================

@@ -39,3 +39,4 @@ Notification tools (Slack/PagerDuty) - Keep humans in the loop
 Cloud provider APIs - For infrastructure changes
 
 Which of these areas are most relevant to your incident response scenarios? I can help you implement the specific tools that would be most valuable for your use cases.
+

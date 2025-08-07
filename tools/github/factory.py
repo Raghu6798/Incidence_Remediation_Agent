@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from loguru import logger
 from tools.github.github_tool import (
     GitHubAPIClient,
     GetRepositoryTool,
@@ -29,18 +30,24 @@ from typing import Optional, List
 
 load_dotenv()
 
-
 class GitHubToolset:
     """Factory class to create and manage all GitHub tools."""
 
     def __init__(self, github_token: str):
-        self.client = GitHubAPIClient(token=github_token)
-        self._tools = None
+        logger.debug("Initializing GitHub toolset")
+        try:
+            self.client = GitHubAPIClient(token=github_token)
+            logger.info("GitHub API client initialized successfully")
+            self._tools = None
+        except Exception as e:
+            logger.error(f"Failed to initialize GitHub API client: {e}")
+            raise
 
     @property
     def tools(self) -> List[AbstractTool]:
         """Get all available GitHub tools."""
         if self._tools is None:
+            logger.debug("Creating GitHub tools list")
             self._tools = [
                 # Repository Management
                 ListRepositoriesTool(github_client=self.client),
@@ -73,6 +80,8 @@ class GitHubToolset:
                 SearchRepositoriesTool(github_client=self.client),
                 SearchIssuesTool(github_client=self.client),
             ]
+            logger.info(f"Successfully created {len(self._tools)} GitHub tools")
+            logger.debug(f"Available tools: {[tool.name for tool in self._tools]}")
         return self._tools
 
     def get_tool_by_name(self, name: str) -> Optional[AbstractTool]:

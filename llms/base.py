@@ -4,6 +4,7 @@ from enum import Enum
 from typing import Dict, Any, Optional, Type
 from dataclasses import dataclass
 from dotenv import load_dotenv
+from loguru import logger
 
 load_dotenv()
 
@@ -78,28 +79,50 @@ class LLMProvider(ABC):
 
     def _validate_environment(self):
         """Validate that required environment variables are set"""
+        logger.debug(
+            f"Validating environment for {self.get_provider_type().value} provider"
+        )
         required_vars = self._get_required_env_vars()
         missing_vars = []
 
         for var_name, purpose in required_vars.items():
             if not os.getenv(var_name):
                 missing_vars.append(f"{var_name} ({purpose})")
+                logger.error(f"Missing environment variable: {var_name} ({purpose})")
 
         if missing_vars:
-            raise LLMProviderError(
+            error_msg = (
                 f"Missing required environment variables for {self.get_provider_type().value}: "
                 f"{', '.join(missing_vars)}"
             )
+            logger.critical(error_msg)
+            raise LLMProviderError(error_msg)
+
+        logger.info(
+            f"Environment validation passed for {self.get_provider_type().value} provider"
+        )
 
     def get_model(self):
         """Get model instance with lazy loading and caching"""
         if self._model is None:
+            logger.debug(
+                f"Creating new model instance for {self.get_provider_type().value}"
+            )
             try:
                 self._model = self._create_model()
+                logger.success(
+                    f"Successfully created model instance for {self.get_provider_type().value}"
+                )
             except Exception as e:
-                raise LLMProviderError(
+                error_msg = (
                     f"Failed to create {self.get_provider_type().value} model: {str(e)}"
                 )
+                logger.error(error_msg)
+                raise LLMProviderError(error_msg)
+        else:
+            logger.debug(
+                f"Using cached model instance for {self.get_provider_type().value}"
+            )
         return self._model
 
     def __str__(self) -> str:

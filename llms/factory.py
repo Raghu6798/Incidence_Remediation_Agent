@@ -3,6 +3,7 @@ from .providers import GeminiLLM, CerebrasLLM, OpenAILLM, ClaudeLLM, MistralLLM
 from typing import Dict, Type, Optional
 import os
 from dotenv import load_dotenv
+from loguru import logger
 
 load_dotenv()
 
@@ -48,21 +49,38 @@ class LLMFactory:
         self, provider_type: LLMType, config: Optional[ModelConfig] = None
     ) -> LLMProvider:
         """Create an LLM provider instance"""
+        logger.debug(f"Creating LLM provider for type: {provider_type.value}")
+
         if provider_type not in self._providers:
             available = ", ".join([p.value for p in self._providers.keys()])
-            raise LLMProviderError(
+            error_msg = (
                 f"Unsupported provider: {provider_type.value}. Available: {available}"
             )
+            logger.error(error_msg)
+            raise LLMProviderError(error_msg)
 
         if config is None:
+            logger.debug(f"Using default configuration for {provider_type.value}")
             config = self._default_configs.get(provider_type)
             if config is None:
-                raise LLMProviderError(
-                    f"No default configuration for {provider_type.value}"
-                )
+                error_msg = f"No default configuration for {provider_type.value}"
+                logger.error(error_msg)
+                raise LLMProviderError(error_msg)
+        else:
+            logger.debug(f"Using custom configuration for {provider_type.value}")
 
         provider_class = self._providers[provider_type]
-        return provider_class(config)
+        logger.info(
+            f"Creating {provider_type.value} provider with model: {config.model_name}"
+        )
+
+        try:
+            provider = provider_class(config)
+            logger.success(f"Successfully created {provider_type.value} provider")
+            return provider
+        except Exception as e:
+            logger.error(f"Failed to create {provider_type.value} provider: {e}")
+            raise
 
     @classmethod
     def register_provider(
