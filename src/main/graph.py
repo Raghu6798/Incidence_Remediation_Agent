@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 from tools.github.factory import GitHubToolset
 from tools.prometheus.factory import PrometheusToolset
+from tools.jenkins.factory import JenkinsToolFactory
 
 import os
 from dotenv import load_dotenv

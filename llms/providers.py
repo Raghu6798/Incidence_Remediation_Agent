@@ -1,4 +1,4 @@
-from .base import LLMProvider, ModelConfig, LLMType, LLMProviderError
+from .base import LLMProvider, ModelConfig,LLMArchitecture, LLMProviderError
 from typing import Dict
 import os
 
@@ -7,8 +7,8 @@ class GeminiLLM(LLMProvider):
     def _get_required_env_vars(self) -> Dict[str, str]:
         return {"GOOGLE_API_KEY": "Google API key for Gemini"}
 
-    def get_provider_type(self) -> LLMType:
-        return LLMType.GEMINI
+    def get_provider_type(self) -> LLMArchitecture:
+        return LLMArchitecture.GEMINI
 
     def _create_model(self):
         try:
@@ -28,8 +28,8 @@ class CerebrasLLM(LLMProvider):
     def _get_required_env_vars(self) -> Dict[str, str]:
         return {"CEREBRAS_API_KEY": "Cerebras API key"}
 
-    def get_provider_type(self) -> LLMType:
-        return LLMType.LLAMA
+    def get_provider_type(self) -> LLMArchitecture:
+        return LLMArchitecture.LLAMA
 
     def _create_model(self):
         try:
@@ -49,8 +49,8 @@ class QwenLLM(LLMProvider):
     def _get_required_env_vars(self) -> Dict[str, str]:
         return {"OPENAI_API_KEY": "OpenAI API key"}
 
-    def get_provider_type(self) -> LLMType:
-        return LLMType.QWEN
+    def get_provider_type(self) -> LLMArchitecture:
+        return LLMArchitecture.QWEN
 
     def _create_model(self):
         try:
@@ -70,8 +70,8 @@ class ClaudeLLM(LLMProvider):
     def _get_required_env_vars(self) -> Dict[str, str]:
         return {"ANTHROPIC_API_KEY": "Anthropic API key for Claude"}
 
-    def get_provider_type(self) -> LLMType:
-        return LLMType.CLAUDE
+    def get_provider_type(self) ->LLMArchitecture:
+        return LLMArchitecture.CLAUDE
 
     def _create_model(self):
         try:
@@ -91,8 +91,8 @@ class OpenAILLM(LLMProvider):
     def _get_required_env_vars(self) -> Dict[str, str]:
         return {"OPENROUTER_API_KEY": "Openrouter API key "}
 
-    def get_provider_type(self) -> LLMType:
-        return LLMType.OPENAI
+    def get_provider_type(self) -> LLMArchitecture:
+        return LLMArchitecture.OPENAI
 
     def _create_model(self):
         try:
@@ -112,8 +112,8 @@ class MistralLLM(LLMProvider):
     def _get_required_env_vars(self) -> Dict[str, str]:
         return {"MISTRAL_API_KEY": "MISTRAL API key for Claude"}
 
-    def get_provider_type(self) -> LLMType:
-        return LLMType.MISTRAL
+    def get_provider_type(self) -> LLMArchitecture:
+        return LLMArchitecture.MISTRAL
 
     def _create_model(self):
         try:

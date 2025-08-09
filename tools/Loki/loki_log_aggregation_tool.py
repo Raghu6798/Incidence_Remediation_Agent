@@ -55,5 +55,5 @@ class LokiLogAggregationTool(AbstractTool):
 
 if __name__ == "__main__":
     tool = LokiLogAggregationTool()
-    result = tool.invoke({"query":'{container="jenkins"} |= "error"'})
+    result = tool.invoke({"query": '{job="containerlogs"}'})
     print(result)

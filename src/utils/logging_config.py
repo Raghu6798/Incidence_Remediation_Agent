@@ -82,7 +82,7 @@ def get_logger(name: str = None):
     Get a logger instance with the specified name.
 
     Args:
-        name: Logger name (usually __name__)
+        name: Logger name (usually __name__ )
 
     Returns:
         Logger instance

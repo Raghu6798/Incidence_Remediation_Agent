@@ -16,7 +16,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from src.utils.logging_config import setup_logging_from_env
 from src.config.settings import Settings
 
-from llms.factory import LLMFactory, LLMType
+from llms.factory import LLMFactory, LLMArchitecture
 from llms.base import ModelConfig, LLMProviderError
 from src.utils.logging_config import setup_logging_from_env, get_logger
 
@@ -30,6 +30,9 @@ from src.config.settings import (
 from tools.github.factory import GitHubToolset
 from tools.kubernetes.factory import KubernetesToolset
 from tools.prometheus.factory import PrometheusToolBuilder,PrometheusToolsetFactory
+from tools.jenkins.factory import JenkinsToolFactory
+from tools.Loki.loki_log_aggregation_tool import LokiLogAggregationTool
+from tools.powershell.factory import create_powershell_tools
 
 load_dotenv()
 
@@ -82,6 +85,48 @@ def load_prometheus_tools() -> List:
     except Exception as e:
         # If anything goes wrong during loading, log it and return an empty list.
         logger.error(f"Failed to load Prometheus tools: {e}")
+        return []
+
+def load_jenkins_tools() -> List:
+    """Load and return Jenkins tools."""
+    try:
+        logger.info("Loading Jenkins tools...")
+        
+        JENKINS_URL = os.getenv("JENKINS_URL")
+        JENKINS_USERNAME = os.getenv("JENKINS_USERNAME")
+        JENKINS_API_TOKEN = os.getenv("JENKINS_API_TOKEN")
+
+        logger.info("Initializing JenkinsToolFactory...")
+        factory = JenkinsToolFactory(
+            base_url=JENKINS_URL,
+            username=JENKINS_USERNAME,
+            api_token=JENKINS_API_TOKEN
+        )
+        jenkins_tools = factory.create_all_tools()
+        print(type(jenkins_tools))
+        validate_tools_structure(jenkins_tools, "Prometheus")
+        logger.success(f"Successfully loaded {len(jenkins_tools)} Prometheus tools")
+        return jenkins_tools
+    except Exception as e:
+        # If anything goes wrong during loading, log it and return an empty list.
+        logger.error(f"Failed to load Jenkins tools: {e}")
+        return []
+
+def load_powershell_tools() -> List:
+    """Load and return PowerShell tools."""
+    try:
+        logger.info("Loading PowerShell tools...")
+        # Call the factory function to get the list of tools
+        ps_tools = create_powershell_tools()
+        
+        # Reuse your validation logic
+        validate_tools_structure(ps_tools, "PowerShell")
+        
+        logger.success(f"Successfully loaded {len(ps_tools)} PowerShell tools")
+        return ps_tools
+    except Exception as e:
+        # If anything goes wrong, log it and return an empty list
+        logger.error(f"Failed to load PowerShell tools: {e}")
         return []
 
 
@@ -144,53 +189,19 @@ def main():
 
         # Initialize LLM configuration
         logger.debug("Initializing LLM configuration")
-        llm_config = get_llm_config()
+        custom_config = ModelConfig(
+        model_name="openai/gpt-5-nano",
+        base_url=os.getenv("OPENROUTER_BASE_URL"),
+        api_key=os.getenv("OPENROUTER_API_KEY"),
+        temperature=0.3,
+        timeout=60,
+        max_completion_tokens=4000
+    )
+    
 
-        # Use the first available LLM provider
-        available_providers = settings.get_available_llm_providers()
-        if not available_providers:
-            raise ValueError(
-                "No LLM providers configured. Please set at least one API key."
-            )
-
-        # For now, use Gemini as default if available, otherwise use the first available
-        if "gemini" in available_providers and llm_config.google_api_key:
-            provider_type = LLMType.GEMINI
-            api_key = llm_config.google_api_key
-            model_name = llm_config.default_model
-        else:
-            # Use the first available provider
-            provider_type = LLMType(available_providers[0])
-            if provider_type == LLMType.GEMINI:
-                api_key = llm_config.google_api_key
-            elif provider_type == LLMType.OPENAI:
-                api_key = llm_config.openrouter_api_key
-            elif provider_type == LLMType.CLAUDE:
-                api_key = llm_config.claude_api_key
-            elif provider_type == LLMType.LLAMA:
-                api_key = llm_config.cerebras_api_key
-            elif provider_type == LLMType.MISTRAL:
-                api_key = llm_config.mistral_api_key
-            else:
-                raise ValueError(f"Unsupported provider type: {provider_type}")
-
-            model_name = llm_config.default_model
-
-        zlm_config = ModelConfig(
-            model_name=model_name,
-            api_key=api_key,
-            temperature=llm_config.default_temperature,
-            max_tokens=llm_config.default_max_tokens,
-            timeout=llm_config.default_timeout,
-        )
-        logger.info(
-            f"LLM configuration created for {provider_type.value} model: {zlm_config.model_name}"
-        )
-
-        logger.debug(f"Creating LLM provider for type: {provider_type.value}")
         try:
-            glm_provider = LLMFactory.create_provider(provider_type, config=zlm_config)
-            logger.info(f"LLM provider created successfully: {glm_provider}")
+            gpt_5_provider = LLMFactory.create_provider(LLMArchitecture.OPENAI, config=custom_config)
+            logger.info(f"LLM provider created successfully: {gpt_5_provider}")
         except LLMProviderError as e:
             logger.error(f"Failed to create LLM provider: {e}")
             raise
@@ -198,7 +209,7 @@ def main():
         # Get model instance
         logger.debug("Getting model instance")
         try:
-            model = glm_provider.get_model()
+            model = gpt_5_provider.get_model()
             logger.info("Model instance retrieved successfully")
         except Exception as e:
             logger.error(f"Failed to get model instance: {e}")
@@ -222,25 +233,20 @@ def main():
         
         # Load Kubernetes tools
         k8s_tools = load_kubernetes_tools()
-        
-        # Load Prometheus tools - FIXED: Use the function instead of direct builder
-        prometheus_tools = load_prometheus_tools()  # This returns a list
-        
-        logger.debug(f"Prometheus tools loaded: {[tool.name for tool in prometheus_tools]}")
-        
-        # Combine all tools into a flat list
+        prometheus_tools = load_prometheus_tools() 
+        jenkins_tools = load_jenkins_tools()
+        powershell_tool = load_powershell_tools()
         logger.info("Combining all tools...")
         all_tools = []
         all_tools.extend(github_tools)     
         all_tools.extend(k8s_tools)         
-        all_tools.extend(prometheus_tools)  # Now this works correctly
-        
-        # Final validation of combined tools
-        validate_tools_structure(all_tools, "Combined")
+        all_tools.extend(prometheus_tools) 
+        all_tools.extend(jenkins_tools)
+        all_tools.extend(powershell_tool)
         
         logger.success(f"Total tools loaded: {len(all_tools)}")
         
-        # Log tool names for verification
+       
         tool_names = [getattr(tool, 'name', 'Unknown') for tool in all_tools]
         logger.info(f"Tool names: {tool_names}")
         

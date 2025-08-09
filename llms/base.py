@@ -9,7 +9,7 @@ from loguru import logger
 load_dotenv()
 
 
-class LLMType(Enum):
+class LLMArchitecture(Enum):
     OPENAI = "openai"
     GEMINI = "gemini"
     LLAMA = "llama"
@@ -28,9 +28,9 @@ class ModelConfig:
     api_key: str
     base_url: Optional[str] = None
     temperature: float = 0.4
-    max_tokens: Optional[int] = None
     timeout: int = 30
     retry_attempts: int = 3
+    max_completion_tokens : Optional[int] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert config to dictionary for model initialization"""
@@ -39,8 +39,8 @@ class ModelConfig:
             "temperature": self.temperature,
             "timeout": self.timeout,
         }
-        if self.max_tokens:
-            config["max_tokens"] = self.max_tokens
+        if self.max_completion_tokens:
+            config["max_completion_tokens"] = self.max_completion_tokens
         if self.base_url:
             config["base_url"] = self.base_url
         if self.api_key:
@@ -73,7 +73,7 @@ class LLMProvider(ABC):
         pass
 
     @abstractmethod
-    def get_provider_type(self) -> LLMType:
+    def get_provider_type(self) -> LLMArchitecture:
         """Return the provider type"""
         pass
 
