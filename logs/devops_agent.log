@@ -2505,3 +2505,194 @@ ValueError: The first argument must be a string or a callable with a __name__ fo
 2025-08-10 02:51:59.572 | INFO     | __main__:main:338 | Received interrupt signal, shutting down...
 2025-08-10 02:51:59.572 | INFO     | __main__:main:350 | DevOps Agent shutdown complete
 2025-08-10 02:51:59.572 | INFO     | __main__:main:351 | ==================================================
+2025-08-10 03:05:00.449 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-10 03:05:00.450 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-10 03:05:00.450 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-10 03:05:00.451 | INFO     | __main__:main:333 | Starting DevOps Incident Response Agent
+2025-08-10 03:05:00.451 | INFO     | __main__:main:334 | ==================================================
+2025-08-10 03:05:00.451 | INFO     | __main__:main:340 | Configuration settings loaded successfully
+2025-08-10 03:05:00.451 | INFO     | __main__:main:346 | All required settings are present
+2025-08-10 03:05:00.451 | INFO     | __main__:main:352 | Environment: development
+2025-08-10 03:05:00.452 | INFO     | __main__:main:353 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-10 03:05:00.452 | INFO     | __main__:main:356 | Debug mode: False
+2025-08-10 03:05:00.452 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-10 03:05:00.452 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-10 03:05:00.452 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-10 03:05:00.453 | INFO     | __main__:main:372 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-10 03:05:01.157 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-10 03:05:01.157 | INFO     | __main__:main:381 | Model instance retrieved successfully
+2025-08-10 03:05:01.158 | INFO     | __main__:main:387 | Loading tools...
+2025-08-10 03:05:01.158 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-10 03:05:01.158 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-10 03:05:01.159 | INFO     | __main__:main:396 | Successfully loaded 21 GitHub tools
+2025-08-10 03:05:01.159 | INFO     | __main__:load_kubernetes_tools:65 | Loading Kubernetes tools...
+2025-08-10 03:05:01.159 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-10 03:05:01.165 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-10 03:05:01.238 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-10 03:05:01.238 | INFO     | __main__:validate_tools_structure:44 | Validating Kubernetes tools structure...
+2025-08-10 03:05:01.239 | SUCCESS  | __main__:validate_tools_structure:59 | Kubernetes tools structure validated: 11 tools
+2025-08-10 03:05:01.239 | SUCCESS  | __main__:load_kubernetes_tools:69 | Successfully loaded 11 Kubernetes tools
+2025-08-10 03:05:01.239 | INFO     | __main__:load_prometheus_tools:79 | Loading Prometheus tools...
+2025-08-10 03:05:01.240 | INFO     | __main__:validate_tools_structure:44 | Validating Prometheus tools structure...
+2025-08-10 03:05:01.240 | SUCCESS  | __main__:validate_tools_structure:59 | Prometheus tools structure validated: 6 tools
+2025-08-10 03:05:01.240 | SUCCESS  | __main__:load_prometheus_tools:86 | Successfully loaded 6 Prometheus tools
+2025-08-10 03:05:01.241 | INFO     | __main__:load_jenkins_tools:97 | Loading Jenkins tools...
+2025-08-10 03:05:01.241 | INFO     | __main__:load_jenkins_tools:103 | Initializing JenkinsToolFactory...
+2025-08-10 03:05:01.241 | INFO     | __main__:validate_tools_structure:44 | Validating Jenkins tools structure...
+2025-08-10 03:05:01.242 | SUCCESS  | __main__:validate_tools_structure:59 | Jenkins tools structure validated: 9 tools
+2025-08-10 03:05:01.242 | SUCCESS  | __main__:load_jenkins_tools:110 | Successfully loaded 9 Prometheus tools
+2025-08-10 03:05:01.242 | INFO     | __main__:load_powershell_tools:121 | Loading PowerShell tools...
+2025-08-10 03:05:01.243 | INFO     | __main__:validate_tools_structure:44 | Validating PowerShell tools structure...
+2025-08-10 03:05:01.244 | SUCCESS  | __main__:validate_tools_structure:59 | PowerShell tools structure validated: 3 tools
+2025-08-10 03:05:01.244 | SUCCESS  | __main__:load_powershell_tools:128 | Successfully loaded 3 PowerShell tools
+2025-08-10 03:05:01.244 | INFO     | __main__:load_slack_tools:138 | Loading Slack tools...
+2025-08-10 03:05:01.244 | INFO     | tools.slack.slack_tool:__init__:47 | Slack API client initialized successfully.
+2025-08-10 03:05:01.245 | INFO     | tools.slack.factory:tools:42 | Successfully created 5 Slack tools.
+2025-08-10 03:05:01.245 | INFO     | __main__:validate_tools_structure:44 | Validating Slack tools structure...
+2025-08-10 03:05:01.245 | SUCCESS  | __main__:validate_tools_structure:59 | Slack tools structure validated: 5 tools
+2025-08-10 03:05:01.246 | SUCCESS  | __main__:load_slack_tools:145 | Successfully loaded 5 Slack tools
+2025-08-10 03:05:01.246 | INFO     | __main__:main:409 | Combining all tools...
+2025-08-10 03:05:01.246 | SUCCESS  | __main__:main:418 | Total tools loaded: 55
+2025-08-10 03:05:01.246 | INFO     | __main__:main:421 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'check_service_health', 'analyze_performance', 'analyze_errors', 'investigate_alerts', 'custom_prometheus_query', 'prometheus_query', 'jenkins_trigger_build', 'jenkins_job_status', 'jenkins_build_info', 'jenkins_console_output', 'jenkins_get_last_build_info', 'jenkins_pipeline_monitor', 'jenkins_health_check', 'jenkins_emergency_deploy', 'jenkins_rollback', 'powershell_tofu_plan', 'powershell_tofu_apply', 'powershell_git_status', 'slack_send_message', 'slack_create_channel', 'slack_invite_users', 'slack_archive_channel', 'slack_pin_message']
+2025-08-10 03:05:01.247 | INFO     | __main__:main:424 | Creating agent prompt...
+2025-08-10 03:05:01.247 | INFO     | __main__:main:426 | Agent prompt configured
+2025-08-10 03:05:01.247 | INFO     | __main__:main:430 | Memory checkpointer created
+2025-08-10 03:05:01.247 | INFO     | __main__:main:433 | Creating ReAct agent...
+2025-08-10 03:05:01.450 | SUCCESS  | __main__:main:437 | DevOps ReAct agent created successfully
+2025-08-10 03:05:01.450 | INFO     | __main__:main:449 | ==================================================
+2025-08-10 03:05:01.450 | INFO     | __main__:main:450 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-10 03:05:01.451 | INFO     | __main__:main:451 | ==================================================
+2025-08-10 03:16:01.144 | INFO     | __main__:main:482 | Received interrupt signal, shutting down...
+2025-08-10 03:16:01.144 | INFO     | __main__:main:494 | DevOps Agent shutdown complete
+2025-08-10 03:16:01.144 | INFO     | __main__:main:495 | ==================================================
+2025-08-10 03:16:33.496 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-10 03:16:33.500 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-10 03:16:33.500 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-10 03:16:33.500 | INFO     | __main__:main:404 | Starting DevOps Incident Response Agent
+2025-08-10 03:16:33.500 | INFO     | __main__:main:405 | ==================================================
+2025-08-10 03:16:33.500 | INFO     | __main__:main:409 | Configuration settings loaded successfully
+2025-08-10 03:16:33.500 | INFO     | __main__:main:415 | All required settings are present
+2025-08-10 03:16:33.500 | INFO     | __main__:main:421 | Environment: development
+2025-08-10 03:16:33.500 | INFO     | __main__:main:422 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-10 03:16:33.502 | INFO     | __main__:main:423 | Debug mode: False
+2025-08-10 03:16:33.502 | INFO     | __main__:main:428 | Slack user ID configured: U08SHB90P7T
+2025-08-10 03:16:33.502 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-10 03:16:33.502 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-10 03:16:33.502 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-10 03:16:33.502 | INFO     | __main__:main:446 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-10 03:16:33.885 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-10 03:16:33.886 | INFO     | __main__:main:455 | Model instance retrieved successfully
+2025-08-10 03:16:33.886 | INFO     | __main__:main:461 | Loading tools...
+2025-08-10 03:16:33.886 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-10 03:16:33.887 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-10 03:16:33.887 | INFO     | __main__:main:470 | Successfully loaded 21 GitHub tools
+2025-08-10 03:16:33.887 | INFO     | __main__:load_kubernetes_tools:67 | Loading Kubernetes tools...
+2025-08-10 03:16:33.888 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-10 03:16:33.894 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-10 03:16:33.952 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-10 03:16:33.952 | INFO     | __main__:validate_tools_structure:47 | Validating Kubernetes tools structure...
+2025-08-10 03:16:33.952 | SUCCESS  | __main__:validate_tools_structure:62 | Kubernetes tools structure validated: 11 tools
+2025-08-10 03:16:33.953 | SUCCESS  | __main__:load_kubernetes_tools:71 | Successfully loaded 11 Kubernetes tools
+2025-08-10 03:16:33.953 | INFO     | __main__:load_prometheus_tools:80 | Loading Prometheus tools...
+2025-08-10 03:16:33.953 | INFO     | __main__:validate_tools_structure:47 | Validating Prometheus tools structure...
+2025-08-10 03:16:33.953 | SUCCESS  | __main__:validate_tools_structure:62 | Prometheus tools structure validated: 6 tools
+2025-08-10 03:16:33.954 | SUCCESS  | __main__:load_prometheus_tools:86 | Successfully loaded 6 Prometheus tools
+2025-08-10 03:16:33.954 | INFO     | __main__:load_jenkins_tools:96 | Loading Jenkins tools...
+2025-08-10 03:16:33.954 | INFO     | __main__:load_jenkins_tools:101 | Initializing JenkinsToolFactory...
+2025-08-10 03:16:33.954 | INFO     | __main__:validate_tools_structure:47 | Validating Jenkins tools structure...
+2025-08-10 03:16:33.955 | SUCCESS  | __main__:validate_tools_structure:62 | Jenkins tools structure validated: 9 tools
+2025-08-10 03:16:33.955 | SUCCESS  | __main__:load_jenkins_tools:108 | Successfully loaded 9 Jenkins tools
+2025-08-10 03:16:33.955 | INFO     | __main__:load_powershell_tools:118 | Loading PowerShell tools...
+2025-08-10 03:16:33.955 | INFO     | __main__:validate_tools_structure:47 | Validating PowerShell tools structure...
+2025-08-10 03:16:33.955 | SUCCESS  | __main__:validate_tools_structure:62 | PowerShell tools structure validated: 3 tools
+2025-08-10 03:16:33.955 | SUCCESS  | __main__:load_powershell_tools:125 | Successfully loaded 3 PowerShell tools
+2025-08-10 03:16:33.956 | INFO     | __main__:load_slack_tools:135 | Loading Slack tools...
+2025-08-10 03:16:33.956 | INFO     | tools.slack.slack_tool:__init__:47 | Slack API client initialized successfully.
+2025-08-10 03:16:33.956 | INFO     | tools.slack.factory:tools:42 | Successfully created 5 Slack tools.
+2025-08-10 03:16:33.956 | INFO     | __main__:validate_tools_structure:47 | Validating Slack tools structure...
+2025-08-10 03:16:33.956 | SUCCESS  | __main__:validate_tools_structure:62 | Slack tools structure validated: 5 tools
+2025-08-10 03:16:33.957 | SUCCESS  | __main__:load_slack_tools:142 | Successfully loaded 5 Slack tools
+2025-08-10 03:16:33.957 | INFO     | __main__:main:482 | Combining all tools...
+2025-08-10 03:16:33.957 | SUCCESS  | __main__:main:491 | Total tools loaded: 55
+2025-08-10 03:16:33.957 | INFO     | __main__:main:494 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'check_service_health', 'analyze_performance', 'analyze_errors', 'investigate_alerts', 'custom_prometheus_query', 'prometheus_query', 'jenkins_trigger_build', 'jenkins_job_status', 'jenkins_build_info', 'jenkins_console_output', 'jenkins_get_last_build_info', 'jenkins_pipeline_monitor', 'jenkins_health_check', 'jenkins_emergency_deploy', 'jenkins_rollback', 'powershell_tofu_plan', 'powershell_tofu_apply', 'powershell_git_status', 'slack_send_message', 'slack_create_channel', 'slack_invite_users', 'slack_archive_channel', 'slack_pin_message']
+2025-08-10 03:16:33.958 | INFO     | __main__:main:497 | Creating agent prompt...
+2025-08-10 03:16:33.958 | INFO     | __main__:main:499 | Agent prompt configured
+2025-08-10 03:16:33.958 | INFO     | __main__:main:503 | Memory checkpointer created
+2025-08-10 03:16:33.958 | INFO     | __main__:main:506 | Creating ReAct agent...
+2025-08-10 03:16:34.151 | SUCCESS  | __main__:main:510 | DevOps ReAct agent created successfully
+2025-08-10 03:16:34.151 | INFO     | __main__:main:522 | ==================================================
+2025-08-10 03:16:34.152 | INFO     | __main__:main:523 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-10 03:16:34.152 | INFO     | __main__:main:525 | Slack integration enabled for user: U08SHB90P7T
+2025-08-10 03:16:34.152 | INFO     | __main__:main:526 | ==================================================
+2025-08-10 03:17:34.808 | INFO     | __main__:main:539 | Processing user input: "We have a P1 incident - our checkout service is down. Please investigate and keep the team updated in #incidents channel."
+2025-08-10 03:17:58.968 | INFO     | __main__:main:539 | Processing user input: We have a P1 incident - our checkout service is down. Please investigate and keep the team updated in #incidents channel.
+2025-08-10 03:19:32.066 | INFO     | __main__:main:539 | Processing user input: Document the resolution steps for today's Redis cluster issue and share the runbook with #devops team for future reference using slack
+2025-08-10 03:21:21.047 | INFO     | __main__:main:539 | Processing user input: Get the user info for the member with ID U08SHB90P7T
+2025-08-10 03:22:12.987 | INFO     | __main__:main:539 | Processing user input: Can you check the existing names of channels
+2025-08-10 03:22:37.589 | INFO     | __main__:main:539 | Processing user input: List all the public Slack channels.
+2025-08-10 03:25:55.065 | INFO     | __main__:main:557 | Received interrupt signal, shutting down...
+2025-08-10 03:25:55.065 | INFO     | __main__:main:569 | DevOps Agent shutdown complete
+2025-08-10 03:25:55.065 | INFO     | __main__:main:570 | ==================================================
+2025-08-10 03:26:00.512 | INFO     | src.utils.logging_config:setup_logging:75 | Logging initialized with level: INFO
+2025-08-10 03:26:00.512 | INFO     | src.utils.logging_config:setup_logging:77 | Log file: logs/devops_agent.log
+2025-08-10 03:26:00.516 | INFO     | src.utils.logging_config:setup_logging_from_env:114 | Logging configured using Pydantic settings
+2025-08-10 03:26:00.516 | INFO     | __main__:main:329 | Starting DevOps Incident Response Agent
+2025-08-10 03:26:00.516 | INFO     | __main__:main:330 | ==================================================
+2025-08-10 03:26:00.516 | INFO     | __main__:main:334 | Configuration settings loaded successfully
+2025-08-10 03:26:00.516 | INFO     | __main__:main:340 | All required settings are present
+2025-08-10 03:26:00.516 | INFO     | __main__:main:346 | Environment: development
+2025-08-10 03:26:00.518 | INFO     | __main__:main:347 | Available LLM providers: ['gemini', 'openai', 'mistral']
+2025-08-10 03:26:00.518 | INFO     | __main__:main:348 | Debug mode: False
+2025-08-10 03:26:00.518 | INFO     | __main__:main:353 | Slack user ID configured: U08SHB90P7T
+2025-08-10 03:26:00.518 | INFO     | llms.factory:create_provider:73 | Creating gemini provider with model: gemini-2.5-flash
+2025-08-10 03:26:00.518 | INFO     | llms.base:_validate_environment:101 | Environment validation passed for gemini provider
+2025-08-10 03:26:00.518 | SUCCESS  | llms.factory:create_provider:79 | Successfully created gemini provider
+2025-08-10 03:26:00.518 | INFO     | __main__:main:371 | LLM provider created successfully: gemini(gemini-2.5-flash)
+2025-08-10 03:26:01.163 | SUCCESS  | llms.base:get_model:113 | Successfully created model instance for gemini
+2025-08-10 03:26:01.164 | INFO     | __main__:main:380 | Model instance retrieved successfully
+2025-08-10 03:26:01.164 | INFO     | __main__:main:386 | Loading tools...
+2025-08-10 03:26:01.165 | INFO     | tools.github.factory:__init__:41 | GitHub API client initialized successfully
+2025-08-10 03:26:01.165 | INFO     | tools.github.factory:tools:84 | Successfully created 21 GitHub tools
+2025-08-10 03:26:01.166 | INFO     | __main__:main:395 | Successfully loaded 21 GitHub tools
+2025-08-10 03:26:01.166 | INFO     | __main__:load_kubernetes_tools:67 | Loading Kubernetes tools...
+2025-08-10 03:26:01.166 | INFO     | tools.kubernetes.factory:from_env:102 | Creating Kubernetes toolset from environment variables
+2025-08-10 03:26:01.175 | INFO     | tools.kubernetes.factory:__init__:54 | Kubernetes toolset initialized successfully.
+2025-08-10 03:26:01.274 | INFO     | tools.kubernetes.factory:tools:86 | Successfully created 11 Kubernetes tools
+2025-08-10 03:26:01.275 | INFO     | __main__:validate_tools_structure:47 | Validating Kubernetes tools structure...
+2025-08-10 03:26:01.275 | SUCCESS  | __main__:validate_tools_structure:62 | Kubernetes tools structure validated: 11 tools
+2025-08-10 03:26:01.277 | SUCCESS  | __main__:load_kubernetes_tools:71 | Successfully loaded 11 Kubernetes tools
+2025-08-10 03:26:01.277 | INFO     | __main__:load_prometheus_tools:80 | Loading Prometheus tools...
+2025-08-10 03:26:01.278 | INFO     | __main__:validate_tools_structure:47 | Validating Prometheus tools structure...
+2025-08-10 03:26:01.278 | SUCCESS  | __main__:validate_tools_structure:62 | Prometheus tools structure validated: 6 tools
+2025-08-10 03:26:01.278 | SUCCESS  | __main__:load_prometheus_tools:86 | Successfully loaded 6 Prometheus tools
+2025-08-10 03:26:01.279 | INFO     | __main__:load_jenkins_tools:96 | Loading Jenkins tools...
+2025-08-10 03:26:01.279 | INFO     | __main__:load_jenkins_tools:101 | Initializing JenkinsToolFactory...
+2025-08-10 03:26:01.281 | INFO     | __main__:validate_tools_structure:47 | Validating Jenkins tools structure...
+2025-08-10 03:26:01.281 | SUCCESS  | __main__:validate_tools_structure:62 | Jenkins tools structure validated: 9 tools
+2025-08-10 03:26:01.282 | SUCCESS  | __main__:load_jenkins_tools:108 | Successfully loaded 9 Jenkins tools
+2025-08-10 03:26:01.282 | INFO     | __main__:load_powershell_tools:118 | Loading PowerShell tools...
+2025-08-10 03:26:01.282 | INFO     | __main__:validate_tools_structure:47 | Validating PowerShell tools structure...
+2025-08-10 03:26:01.282 | SUCCESS  | __main__:validate_tools_structure:62 | PowerShell tools structure validated: 3 tools
+2025-08-10 03:26:01.284 | SUCCESS  | __main__:load_powershell_tools:125 | Successfully loaded 3 PowerShell tools
+2025-08-10 03:26:01.284 | INFO     | __main__:load_slack_tools:135 | Loading Slack tools...
+2025-08-10 03:26:01.284 | INFO     | tools.slack.slack_tool:__init__:47 | Slack API client initialized successfully.
+2025-08-10 03:26:01.284 | INFO     | tools.slack.factory:tools:42 | Successfully created 5 Slack tools.
+2025-08-10 03:26:01.285 | INFO     | __main__:validate_tools_structure:47 | Validating Slack tools structure...
+2025-08-10 03:26:01.286 | SUCCESS  | __main__:validate_tools_structure:62 | Slack tools structure validated: 5 tools
+2025-08-10 03:26:01.286 | SUCCESS  | __main__:load_slack_tools:142 | Successfully loaded 5 Slack tools
+2025-08-10 03:26:01.286 | INFO     | __main__:main:407 | Combining all tools...
+2025-08-10 03:26:01.287 | SUCCESS  | __main__:main:416 | Total tools loaded: 55
+2025-08-10 03:26:01.287 | INFO     | __main__:main:419 | Tool names: ['list_repositories', 'get_repository', 'list_issues', 'create_issue', 'update_issue', 'list_pull_requests', 'create_pull_request', 'merge_pull_request', 'list_workflow_runs', 'trigger_workflow', 'cancel_workflow_run', 'list_commits', 'list_branches', 'list_deployments', 'create_deployment', 'get_file_content', 'create_or_update_file', 'list_webhooks', 'create_webhook', 'search_repositories', 'search_issues', 'list_k8s_pods', 'get_k8s_pod_logs', 'delete_k8s_pod', 'list_k8s_services', 'get_k8s_service', 'list_k8s_deployments', 'scale_k8s_deployment', 'list_k8s_nodes', 'create_k8s_namespace', 'list_k8s_configmaps', 'list_k8s_secrets', 'check_service_health', 'analyze_performance', 'analyze_errors', 'investigate_alerts', 'custom_prometheus_query', 'prometheus_query', 'jenkins_trigger_build', 'jenkins_job_status', 'jenkins_build_info', 'jenkins_console_output', 'jenkins_get_last_build_info', 'jenkins_pipeline_monitor', 'jenkins_health_check', 'jenkins_emergency_deploy', 'jenkins_rollback', 'powershell_tofu_plan', 'powershell_tofu_apply', 'powershell_git_status', 'slack_send_message', 'slack_create_channel', 'slack_invite_users', 'slack_archive_channel', 'slack_pin_message']
+2025-08-10 03:26:01.288 | INFO     | __main__:main:422 | Creating agent prompt...
+2025-08-10 03:26:01.288 | INFO     | __main__:main:424 | Agent prompt configured
+2025-08-10 03:26:01.288 | INFO     | __main__:main:428 | Memory checkpointer created
+2025-08-10 03:26:01.288 | INFO     | __main__:main:431 | Creating ReAct agent...
+2025-08-10 03:26:01.526 | SUCCESS  | __main__:main:435 | DevOps ReAct agent created successfully
+2025-08-10 03:26:01.526 | INFO     | __main__:main:447 | ==================================================
+2025-08-10 03:26:01.526 | INFO     | __main__:main:448 | DevOps Agent is ready! Type 'quit' or 'exit' to stop.
+2025-08-10 03:26:01.528 | INFO     | __main__:main:450 | Slack integration enabled for user: U08SHB90P7T
+2025-08-10 03:26:01.528 | INFO     | __main__:main:451 | ==================================================
+2025-08-10 03:26:46.679 | INFO     | __main__:main:464 | Processing user input: A major incident has just been declared: "High latency on API Gateway". I need you to manage the full Slack communication lifecycle for this. Start by creating a new, public incident channel for it. Once the channel is ready, post the initial alert announcing the issue and that the channel is now active. Immediately invite the on-call engineer, user <U08SHB90P7T>, to the channel. It's critical that the initial alert is pinned for visibility. After that, post a couple of status updates about identifying the cause and deploying a fix. Finally, once the incident is resolved, post a resolution message and then archive the channel.
+2025-08-10 03:30:50.533 | INFO     | __main__:main:482 | Received interrupt signal, shutting down...
+2025-08-10 03:30:50.533 | INFO     | __main__:main:494 | DevOps Agent shutdown complete
+2025-08-10 03:30:50.533 | INFO     | __main__:main:495 | ==================================================
