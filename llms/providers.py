@@ -1,4 +1,4 @@
-from .base import LLMProvider, ModelConfig,LLMArchitecture, LLMProviderError
+from .base import LLMProvider, ModelConfig, LLMArchitecture, LLMProviderError
 from typing import Dict
 import os
 
@@ -70,7 +70,7 @@ class ClaudeLLM(LLMProvider):
     def _get_required_env_vars(self) -> Dict[str, str]:
         return {"ANTHROPIC_API_KEY": "Anthropic API key for Claude"}
 
-    def get_provider_type(self) ->LLMArchitecture:
+    def get_provider_type(self) -> LLMArchitecture:
         return LLMArchitecture.CLAUDE
 
     def _create_model(self):

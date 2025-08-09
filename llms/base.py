@@ -30,7 +30,7 @@ class ModelConfig:
     temperature: float = 0.4
     timeout: int = 30
     retry_attempts: int = 3
-    max_completion_tokens : Optional[int] = None
+    max_completion_tokens: Optional[int] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert config to dictionary for model initialization"""

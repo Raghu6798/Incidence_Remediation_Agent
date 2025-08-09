@@ -97,7 +97,6 @@ class LLMFactory:
 
 # Usage example
 if __name__ == "__main__":
-   
     custom_config = ModelConfig(
         model_name="openai/gpt-5-mini",
         base_url=os.getenv("OPENROUTER_BASE_URL"),

@@ -6,6 +6,7 @@ This script initializes and runs the ReAct agent with all required tools.
 
 import os
 import sys
+import uuid
 from pathlib import Path
 from typing import List, Optional
 from dotenv import load_dotenv
@@ -29,30 +30,32 @@ from src.config.settings import (
 
 from tools.github.factory import GitHubToolset
 from tools.kubernetes.factory import KubernetesToolset
-from tools.prometheus.factory import PrometheusToolBuilder,PrometheusToolsetFactory
+from tools.prometheus.factory import PrometheusToolBuilder, PrometheusToolsetFactory
 from tools.jenkins.factory import JenkinsToolFactory
 from tools.Loki.loki_log_aggregation_tool import LokiLogAggregationTool
 from tools.powershell.factory import create_powershell_tools
+from tools.slack.factory import SlackToolsetFactory
 
 load_dotenv()
+
 
 def validate_tools_structure(tools: List, source_name: str) -> None:
     """Validate that tools is a flat list of tool instances, not nested lists."""
     logger.info(f"Validating {source_name} tools structure...")
-    
+
     if not isinstance(tools, list):
         raise ValueError(f"{source_name} tools must be a list, got {type(tools)}")
-    
+
     for i, tool in enumerate(tools):
         if isinstance(tool, list):
             raise ValueError(
                 f"{source_name} tool at index {i} is a list, not a tool instance. "
                 f"This suggests improper tool collection - use extend() not append()."
             )
-        
-        if not hasattr(tool, 'name'):
+
+        if not hasattr(tool, "name"):
             logger.warning(f"{source_name} tool at index {i} missing 'name' attribute")
-    
+
     logger.success(f"{source_name} tools structure validated: {len(tools)} tools")
 
 
@@ -74,10 +77,10 @@ def load_prometheus_tools() -> List:
     """Load and return Prometheus tools."""
     try:
         logger.info("Loading Prometheus tools...")
-        
+
         # The factory method returns a list of tools. Use one consistent name.
         prometheus_tools = PrometheusToolsetFactory.create_toolset_from_env()
-        
+
         # Now validation will work correctly.
         validate_tools_structure(prometheus_tools, "Prometheus")
         logger.success(f"Successfully loaded {len(prometheus_tools)} Prometheus tools")
@@ -87,24 +90,23 @@ def load_prometheus_tools() -> List:
         logger.error(f"Failed to load Prometheus tools: {e}")
         return []
 
+
 def load_jenkins_tools() -> List:
     """Load and return Jenkins tools."""
     try:
         logger.info("Loading Jenkins tools...")
-        
+
         JENKINS_URL = os.getenv("JENKINS_URL")
         JENKINS_USERNAME = os.getenv("JENKINS_USERNAME")
         JENKINS_API_TOKEN = os.getenv("JENKINS_API_TOKEN")
 
         logger.info("Initializing JenkinsToolFactory...")
         factory = JenkinsToolFactory(
-            base_url=JENKINS_URL,
-            username=JENKINS_USERNAME,
-            api_token=JENKINS_API_TOKEN
+            base_url=JENKINS_URL, username=JENKINS_USERNAME, api_token=JENKINS_API_TOKEN
         )
         jenkins_tools = factory.create_all_tools()
         print(type(jenkins_tools))
-        validate_tools_structure(jenkins_tools, "Prometheus")
+        validate_tools_structure(jenkins_tools, "Jenkins")
         logger.success(f"Successfully loaded {len(jenkins_tools)} Prometheus tools")
         return jenkins_tools
     except Exception as e:
@@ -112,18 +114,36 @@ def load_jenkins_tools() -> List:
         logger.error(f"Failed to load Jenkins tools: {e}")
         return []
 
+
 def load_powershell_tools() -> List:
     """Load and return PowerShell tools."""
     try:
         logger.info("Loading PowerShell tools...")
         # Call the factory function to get the list of tools
         ps_tools = create_powershell_tools()
-        
+
         # Reuse your validation logic
         validate_tools_structure(ps_tools, "PowerShell")
-        
+
         logger.success(f"Successfully loaded {len(ps_tools)} PowerShell tools")
         return ps_tools
+    except Exception as e:
+        # If anything goes wrong, log it and return an empty list
+        logger.error(f"Failed to load PowerShell tools: {e}")
+        return []
+    
+def load_slack_tools() -> List:
+    """Load and return Slack tools."""
+    try:
+        logger.info("Loading Slack tools...")
+        slack_token = os.getenv("SLACK_BOT_TOKEN")
+        slack_toolset = SlackToolsetFactory(slack_bot_token=slack_token)
+        slack_tools = slack_toolset.tools
+
+        validate_tools_structure(slack_tools, "Slack")
+
+        logger.success(f"Successfully loaded {len(slack_tools)} Slack tools")
+        return slack_tools
     except Exception as e:
         # If anything goes wrong, log it and return an empty list
         logger.error(f"Failed to load PowerShell tools: {e}")
@@ -132,26 +152,31 @@ def load_powershell_tools() -> List:
 
 def create_agent_prompt() -> str:
     """Create the system prompt for the DevOps agent."""
-    return """You are a DevOps Incident Response Agent. Your role is to help diagnose, troubleshoot, and resolve infrastructure and application issues.
+    return """You are a DevOps Incident Response Agent. Your role is to help diagnose, troubleshoot, and resolve infrastructure and application issues by using the tools provided.
+
+You MUST use the provided tools to interact with the outside world (e.g., checking systems, sending notifications). Do not simulate actions or generate reports about actions you have not performed. Always execute a tool call when an action is required.
 
 Available Tools:
 - GitHub tools: For repository management, issue tracking, and code analysis
 - Kubernetes tools: For container orchestration, pod management, and cluster operations
 - Prometheus tools: For metrics collection, monitoring, and alerting
+- Jenkins tools: For triggering builds, rollbacks, and checking pipeline health
+- Slack tools: For communicating with the team, creating incident channels, and sending notifications.
 
 Guidelines:
-1. Always gather information before taking action
-2. Use appropriate tools based on the incident type
-3. Provide clear explanations for your actions
-4. Suggest preventive measures when applicable
-5. Document your findings and solutions
+1. Always gather information before taking action.
+2. Communicate key actions and findings to the team using Slack tools. For significant issues, create a dedicated incident channel (e.g., 'incident-api-outage-2024-05-21') and post updates there.
+3. Use appropriate tools based on the incident type.
+4. Provide clear explanations for your actions.
+5. Suggest preventive measures when applicable.
+6. Document your findings and solutions.
 
 When responding to incidents:
-1. Assess the situation using monitoring tools
-2. Identify affected components
-3. Implement appropriate remediation steps
-4. Verify the resolution
-5. Provide a summary of actions taken
+1. Assess the situation using monitoring tools.
+2. Identify affected components.
+3. Implement appropriate remediation steps.
+4. Verify the resolution.
+5. Provide a summary of actions taken.
 
 Be helpful, thorough, and prioritize system stability and security."""
 
@@ -163,10 +188,9 @@ def main():
         setup_logging_from_env()
         logger.info("Starting DevOps Incident Response Agent")
         logger.info("=" * 50)
-        
-        # Create LLM provider and model
-        logger.info("Creating LLM provider...")
-        
+
+     
+
         logger.debug("Loading configuration settings")
         settings = get_settings()
         logger.info("Configuration settings loaded successfully")
@@ -190,18 +214,18 @@ def main():
         # Initialize LLM configuration
         logger.debug("Initializing LLM configuration")
         custom_config = ModelConfig(
-        model_name="openai/gpt-5-nano",
-        base_url=os.getenv("OPENROUTER_BASE_URL"),
-        api_key=os.getenv("OPENROUTER_API_KEY"),
-        temperature=0.3,
-        timeout=60,
-        max_completion_tokens=4000
-    )
-    
+            model_name="gemini-2.5-flash",
+            api_key=os.getenv("GOOGLE_API_KEY"),
+            temperature=0.3,
+            timeout=60,
+            max_completion_tokens=4000,
+        )
 
         try:
-            gpt_5_provider = LLMFactory.create_provider(LLMArchitecture.OPENAI, config=custom_config)
-            logger.info(f"LLM provider created successfully: {gpt_5_provider}")
+            gemini_25_provider = LLMFactory.create_provider(
+                LLMArchitecture.GEMINI, config=custom_config
+            )
+            logger.info(f"LLM provider created successfully: {gemini_25_provider}")
         except LLMProviderError as e:
             logger.error(f"Failed to create LLM provider: {e}")
             raise
@@ -209,15 +233,15 @@ def main():
         # Get model instance
         logger.debug("Getting model instance")
         try:
-            model = gpt_5_provider.get_model()
+            model = gemini_25_provider.get_model()
             logger.info("Model instance retrieved successfully")
         except Exception as e:
             logger.error(f"Failed to get model instance: {e}")
             raise
-        
+
         # Load all tools
         logger.info("Loading tools...")
-        
+
         logger.debug("Initializing GitHub toolset")
         try:
             github_config = get_github_config()
@@ -226,107 +250,106 @@ def main():
             )
             github_tools = github_toolset.tools
             logger.info(f"Successfully loaded {len(github_tools)} GitHub tools")
-            logger.debug(f"Available GitHub tools: {[tool.name for tool in github_tools]}")
+            logger.debug(
+                f"Available GitHub tools: {[tool.name for tool in github_tools]}"
+            )
         except Exception as e:
             logger.error(f"Failed to initialize GitHub toolset: {e}")
             raise
-        
-        # Load Kubernetes tools
+
         k8s_tools = load_kubernetes_tools()
-        prometheus_tools = load_prometheus_tools() 
+        prometheus_tools = load_prometheus_tools()
         jenkins_tools = load_jenkins_tools()
         powershell_tool = load_powershell_tools()
+        slack_tools = load_slack_tools()
         logger.info("Combining all tools...")
         all_tools = []
-        all_tools.extend(github_tools)     
-        all_tools.extend(k8s_tools)         
-        all_tools.extend(prometheus_tools) 
+        all_tools.extend(github_tools)
+        all_tools.extend(k8s_tools)
+        all_tools.extend(prometheus_tools)
         all_tools.extend(jenkins_tools)
         all_tools.extend(powershell_tool)
-        
+        all_tools.extend(slack_tools)
+
         logger.success(f"Total tools loaded: {len(all_tools)}")
-        
-       
-        tool_names = [getattr(tool, 'name', 'Unknown') for tool in all_tools]
+
+        tool_names = [getattr(tool, "name", "Unknown") for tool in all_tools]
         logger.info(f"Tool names: {tool_names}")
-        
+
         # Create agent prompt
         logger.info("Creating agent prompt...")
         prompt = create_agent_prompt()
         logger.info("Agent prompt configured")
-        
+
         # Create memory checkpointer
         checkpointer = MemorySaver()
         logger.info("Memory checkpointer created")
-        
+
         # Create ReAct agent
         logger.info("Creating ReAct agent...")
         devops_agent = create_react_agent(
-            model=model,
-            tools=all_tools,
-            prompt=prompt,
-            checkpointer=checkpointer
+            model=model, tools=all_tools, prompt=prompt, checkpointer=checkpointer
         )
         logger.success("DevOps ReAct agent created successfully")
-        
+
         # Configure agent
         config = {
             "configurable": {
                 "thread_id": "devops-agent-main",
-                "checkpoint_id": None,
+                "checkpoint_id": uuid.uuid4(),
+                "recursion_limit":100
             }
         }
-        
+
         # Interactive loop
         logger.info("=" * 50)
         logger.info("DevOps Agent is ready! Type 'quit' or 'exit' to stop.")
         logger.info("=" * 50)
-        
+
         while True:
             try:
                 user_input = input("\n🔧 DevOps Agent > ").strip()
-                
-                if user_input.lower() in ['quit', 'exit', 'q']:
+
+                if user_input.lower() in ["quit", "exit", "q"]:
                     logger.info("Shutting down DevOps Agent...")
                     break
-                
+
                 if not user_input:
                     continue
-                
+
                 logger.info(f"Processing user input: {user_input}")
-                
+
                 # Get agent response
                 response = devops_agent.invoke(
                     {"messages": [{"role": "user", "content": user_input}]},
-                    config=config
+                    config=config,
                 )
-                
-                # Extract and display the response
+
                 if response and "messages" in response:
                     last_message = response["messages"][-1]
-                    if hasattr(last_message, 'content'):
+                    if hasattr(last_message, "content"):
                         print(f"\n🤖 Agent: {last_message.content}")
                     else:
                         print(f"\n🤖 Agent: {last_message}")
                 else:
                     print(f"\n🤖 Agent: {response}")
-                    
+
             except KeyboardInterrupt:
                 logger.info("Received interrupt signal, shutting down...")
                 break
             except Exception as e:
                 logger.error(f"Error processing request: {e}")
                 print(f"❌ Error: {e}")
-        
+
     except Exception as e:
         logger.critical(f"Critical error in main function: {e}")
         logger.error("Full traceback:", exc_info=True)
         return 1
-    
+
     finally:
         logger.info("DevOps Agent shutdown complete")
         logger.info("=" * 50)
-    
+
     return 0
 
 
