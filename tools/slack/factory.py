@@ -14,6 +14,7 @@ from tools.slack.slack_tool import (
     InviteUsersTool,
     ArchiveChannelTool,
     PinMessageTool,
+    FindUserByEmailTool
 )
 
 load_dotenv()
@@ -38,6 +39,7 @@ class SlackToolsetFactory:
                 InviteUsersTool(slack_client=self.client),
                 ArchiveChannelTool(slack_client=self.client),
                 PinMessageTool(slack_client=self.client),
+                FindUserByEmailTool(slack_client=self.client)
             ]
             logger.info(f"Successfully created {len(self._tools)} Slack tools.")
         return self._tools

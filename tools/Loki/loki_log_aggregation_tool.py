@@ -1,5 +1,5 @@
 # log_aggregation_tool.py
-
+import os 
 import requests
 from typing import Optional, Type, ClassVar
 
@@ -21,13 +21,12 @@ class LokiLogAggregationTool(AbstractTool):
     args_schema: Optional[Type[BaseModel]] = LokiQueryInput
     return_direct: bool = True
 
-    LOKI_API_URL: ClassVar[str] = "http://localhost:3100/loki/api/v1/query"
-
     def _run(
         self,
         query: str,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
+        loki_url = os.getenv("LOKI_API_URL", "http://localhost:3100/loki/api/v1/query")
         try:
             response = requests.get(self.LOKI_API_URL, params={"query": query})
             response.raise_for_status()
