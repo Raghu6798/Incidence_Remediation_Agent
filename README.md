@@ -658,4 +658,14 @@ LOG_CONSOLE=true
 LOG_FILE_ENABLED=true
 LOG_ROTATION=10 MB
 LOG_RETENTION=30 days
+
+# Langsmith Configuration
+
+
+LANGSMITH_TRACING="true"
+LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
+LANGSMITH_API_KEY="<Your_langsmith_api_key>"
+LANGSMITH_PROJECT="<Your_langsmith_project>"
+
+
 ```
