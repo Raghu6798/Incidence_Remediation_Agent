@@ -1,6 +1,6 @@
 {
   "dependencies": ["."],
   "graphs": {
-    "chat": "./chat/graph.py:graph"
+    "chat": "./src/main/graph.py:graph"
   }
 }
