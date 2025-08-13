@@ -4,7 +4,7 @@ import subprocess
 import threading
 import uuid
 import queue
-
+import platform
 
 class PowerShellRunner:
     """
@@ -13,16 +13,32 @@ class PowerShellRunner:
     """
 
     def __init__(self):
-        self.process = subprocess.Popen(
-            ["powershell.exe", "-NoExit", "-NoLogo", "-Command", "-"],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            encoding="utf-8",
-            errors="ignore",
-            bufsize=1,
-        )
+        # --- THIS IS THE KEY CHANGE ---
+        # Detect the operating system and choose the correct executable.
+        # This makes the runner cross-platform.
+        if platform.system() == "Windows":
+            executable = "powershell.exe"
+        else:
+            executable = "pwsh" # The executable name for PowerShell on Linux/macOS
+
+        try:
+            self.process = subprocess.Popen(
+                [executable, "-NoExit", "-NoLogo", "-Command", "-"], # <-- USE THE VARIABLE HERE
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                encoding="utf-8",
+                errors="ignore",
+                bufsize=1,
+            )
+        except FileNotFoundError:
+            # Provide a much more helpful error message if PowerShell is not installed.
+            raise FileNotFoundError(
+                f"The PowerShell executable '{executable}' was not found in the system's PATH. "
+                "Please ensure PowerShell is installed and accessible to run these tools."
+            ) from None
+
         self.lock = threading.Lock()
 
         # --- Threaded Stream Reading Setup ---

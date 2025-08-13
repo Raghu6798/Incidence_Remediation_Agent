@@ -98,7 +98,7 @@ class ServiceHealthChecker(AbstractTool):
             )
 
             # Check response time if available
-            response_time_query = f'histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{{service="{service_name}"}}[{time_range}]))'
+            response_time_query = f'histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{{job="{service_name}"}}[{time_range}]))'
             response_time_result = self.prometheus_tool._run(
                 query=response_time_query, start_time=time_range, end_time="now"
             )
