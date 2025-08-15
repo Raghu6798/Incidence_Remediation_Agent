@@ -4,7 +4,14 @@ from pathlib import Path
 from loguru import logger
 from typing import Optional
 
-from src.config.settings import get_settings, get_logging_config
+# Ensure src is in path to allow relative import
+try:
+    from src.config.settings import get_logging_config
+except (ImportError, ModuleNotFoundError):
+    # This fallback allows the module to be used even if settings can't be imported,
+    # though configuration will rely solely on environment variables.
+    print("Warning: Could not import get_logging_config. Falling back to env vars for logging.", file=sys.stderr)
+    get_logging_config = None
 
 
 def setup_logging(
@@ -29,7 +36,7 @@ def setup_logging(
         format_string: Custom format string for logs
     """
 
-    # Remove default logger
+    # Remove default logger to avoid duplicate outputs
     logger.remove()
 
     # Default format if not provided
@@ -37,7 +44,7 @@ def setup_logging(
         format_string = (
             "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
             "<level>{level: <8}</level> | "
-            "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
+            "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
             "<level>{message}</level>"
         )
 
@@ -46,7 +53,7 @@ def setup_logging(
         logger.add(
             sys.stdout,
             format=format_string,
-            level=log_level,
+            level=log_level.upper(),
             colorize=True,
             backtrace=True,
             diagnose=True,
@@ -59,25 +66,29 @@ def setup_logging(
             logs_dir = Path("logs")
             logs_dir.mkdir(exist_ok=True)
             log_file = logs_dir / "devops_agent.log"
+        else:
+            # Ensure parent directory exists for custom log file paths
+            Path(log_file).parent.mkdir(parents=True, exist_ok=True)
 
         logger.add(
             str(log_file),
             format=format_string,
-            level=log_level,
+            level=log_level.upper(),
             rotation=rotation,
             retention=retention,
             compression="zip",
             backtrace=True,
             diagnose=True,
-            enqueue=True,  # Thread-safe logging
+            enqueue=True,  # Makes logging thread-safe
+            serialize=False, # Set to True for JSON logs
         )
 
     logger.info(f"Logging initialized with level: {log_level}")
-    if enable_file:
-        logger.info(f"Log file: {log_file}")
+    if enable_file and log_file:
+        logger.info(f"Log file: {Path(log_file).resolve()}")
 
 
-def get_logger(name: str = None):
+def get_logger(name: Optional[str] = None):
     """
     Get a logger instance with the specified name.
 
@@ -96,27 +107,31 @@ def setup_logging_from_env():
     Setup logging based on Pydantic settings configuration.
 
     This function uses the centralized settings management to configure logging
-    with support for .env files and environment variables.
+    with support for .env files and environment variables. It includes a fallback
+    to environment variables if the settings module cannot be loaded.
     """
     try:
-        # Get logging configuration from Pydantic settings
-        logging_config = get_logging_config()
-
-        setup_logging(
-            log_level=logging_config.log_level,
-            log_file=logging_config.log_file,
-            enable_console=logging_config.log_console,
-            enable_file=logging_config.log_file_enabled,
-            rotation=logging_config.log_rotation,
-            retention=logging_config.log_retention,
-        )
-
-        logger.info("Logging configured using Pydantic settings")
+        # Use Pydantic settings if available
+        if get_logging_config:
+            logging_config = get_logging_config()
+            setup_logging(
+                log_level=logging_config.log_level,
+                log_file=logging_config.log_file,
+                enable_console=logging_config.log_console,
+                enable_file=logging_config.log_file_enabled,
+                rotation=logging_config.log_rotation,
+                retention=logging_config.log_retention,
+            )
+            logger.debug("Logging configured successfully using Pydantic settings.")
+            return
+        else:
+            raise ImportError("get_logging_config not available.")
 
     except Exception as e:
         # Fallback to environment variables if settings fail to load
         logger.warning(
-            f"Failed to load settings, falling back to environment variables: {e}"
+            f"Could not configure logging from Pydantic settings ({e}). "
+            "Falling back to environment variables."
         )
 
         log_level = os.getenv("LOG_LEVEL", "INFO").upper()

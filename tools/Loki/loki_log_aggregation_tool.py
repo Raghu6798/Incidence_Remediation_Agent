@@ -115,7 +115,6 @@ class LogRetrievalInput(BaseModel):
     )
 
 # -------------------- LangChain Tool --------------------
-
 @tool("retrieve_job_logs", args_schema=LogRetrievalInput)
 def retrieve_job_logs(
     job_name: str,
@@ -125,74 +124,64 @@ def retrieve_job_logs(
     additional_filters: str = ""
 ) -> Dict[str, Any]:
     """
-    Retrieve logs for a specific job from Loki logging system.
-    
-    This tool fetches logs from a Loki instance for a given job name within
-    a specified time range. It returns structured log data including timestamps,
-    log lines, and query statistics.
-    
-    Args:
-        job_name: Name of the job to retrieve logs for
-        hours_back: Number of hours back from current time to fetch logs
-        limit: Maximum number of log entries to retrieve
-        loki_url: Base URL of the Loki instance
-        additional_filters: Additional LogQL filters to apply
-    
-    Returns:
-        Dictionary containing:
-        - status: Query status
-        - log_count: Total number of log entries retrieved
-        - logs: List of log entries with timestamps and messages
-        - stats: Query execution statistics
-        - error: Error message if query failed
+    Retrieve and filter logs for a specific job from the Loki logging system.
+
+    This is the primary tool for inspecting application behavior, debugging errors, and
+    understanding system events. It returns a structured JSON object with the logs and query metadata.
+
+    **Parameters Explained:**
+    - `job_name`: (Required) The name of the service to query. For the main application, use "fastapi-app".
+    - `hours_back`: How far back in time to search for logs. Defaults to 1 hour.
+    - `limit`: The maximum number of log lines to return.
+    - `additional_filters`: (Optional) A powerful LogQL string to filter the results. See examples below.
+
+    **Recommended Usage Strategy (IMPORTANT):**
+    1.  **First Call (Broad Context):** Always make your first call for a job WITHOUT `additional_filters`. This gives you a broad overview of all recent activity (INFO, ERROR, etc.) and helps you form a hypothesis.
+        - *Example: `retrieve_job_logs(job_name="fastapi-app")`*
+    2.  **Second Call (Focused Investigation):** After reviewing the initial logs, make a second, more specific call using `additional_filters` to test your hypothesis.
+
+    **Powerful Filtering Examples for `additional_filters`:**
+    - To find lines containing the word "error" (case-sensitive): `additional_filters='|= "error"'`
+    - To find lines that DO NOT contain "debug": `additional_filters='!= "debug"'`
+    - To find lines matching a regular expression (e.g., errors or warnings): `additional_filters='|~ "error|warn|critical"'`
+    - To find lines in JSON logs where the level is ERROR: `additional_filters='| json | record_level_name="ERROR"'`
+    - To find a specific transaction ID in JSON logs: `additional_filters='| json | record_extra_transaction_id="1234-abcd"'`
+
+    **How to Interpret the Output:**
+    The tool returns a JSON object.
+    - Check the `status` key. If "error", the query failed.
+    - Check the `log_count` key. If 0, no logs matched your query.
+    - The actual logs are in the `logs` key, which is a list of dictionaries.
     """
     
+    # ... (the implementation of your function remains exactly the same)
     try:
-        # Construct the query URL
         url = f"{loki_url}/loki/api/v1/query_range"
-        
-        # Build LogQL query
         base_query = f'{{job="{job_name}"}}'
-        if additional_filters:
-            query = f"{base_query} {additional_filters}"
-        else:
-            query = base_query
+        query = f"{base_query} {additional_filters}" if additional_filters else base_query
         
-        # Calculate time range (Loki expects nanosecond timestamps)
         current_time = int(time.time())
-        start_time = current_time - (hours_back * 3600)  # hours_back hours ago
+        start_time = current_time - (hours_back * 3600)
         
         params = {
             "query": query,
-            "start": str(start_time * 1_000_000_000),  # Convert to nanoseconds
-            "end": str(current_time * 1_000_000_000),   # Convert to nanoseconds
+            "start": str(start_time * 1_000_000_000),
+            "end": str(current_time * 1_000_000_000),
             "limit": str(limit)
         }
         
-        # Make the request
         response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
-        
-        # Parse the response
         parsed = LokiResponse(**response.json())
         
-        # Extract logs in a more readable format
         logs = []
         total_entries = 0
-        
         for result in parsed.data.result:
-            stream_info = {
-                "filename": result.stream.filename,
-                "job": result.stream.job
-            }
-            
+            stream_info = {"filename": result.stream.filename, "job": result.stream.job}
             for entry in result.values:
                 timestamp_ns, log_line = entry.model_dump()
-                
-                # Convert nanosecond timestamp to readable format
                 timestamp_sec = int(timestamp_ns) / 1_000_000_000
                 readable_timestamp = datetime.fromtimestamp(timestamp_sec).isoformat()
-                
                 logs.append({
                     "timestamp": readable_timestamp,
                     "timestamp_ns": timestamp_ns,
@@ -201,7 +190,6 @@ def retrieve_job_logs(
                 })
                 total_entries += 1
         
-        # Sort logs by timestamp (most recent first)
         logs.sort(key=lambda x: x["timestamp_ns"], reverse=True)
         
         return {
@@ -221,22 +209,10 @@ def retrieve_job_logs(
                 "lines_processed": parsed.data.stats.summary.totalLinesProcessed
             }
         }
-        
     except requests.exceptions.RequestException as e:
-        return {
-            "status": "error",
-            "error": f"Failed to connect to Loki: {str(e)}",
-            "log_count": 0,
-            "logs": []
-        }
+        return {"status": "error", "error": f"Failed to connect to Loki: {str(e)}", "log_count": 0, "logs": []}
     except Exception as e:
-        return {
-            "status": "error", 
-            "error": f"Unexpected error: {str(e)}",
-            "log_count": 0,
-            "logs": []
-        }
-
+        return {"status": "error", "error": f"Unexpected error: {str(e)}", "log_count": 0, "logs": []}
 # -------------------- Alternative: Function-based Tool --------------------
 
 def create_log_retrieval_tool(default_loki_url: str = "http://localhost:3100"):
@@ -262,3 +238,8 @@ def create_log_retrieval_tool(default_loki_url: str = "http://localhost:3100"):
         )
     
     return retrieve_job_logs_configured
+
+
+if __name__ == "__main__":
+    result = retrieve_job_logs.invoke({'job_name': 'fastapi-app'})
+    print(result)
